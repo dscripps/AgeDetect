@@ -19,13 +19,15 @@ import glob
 # scale_factor=1.2, min_neighbors=2, flags=CV_HAAR_DO_CANNY_PRUNING, 
 # min_size=<minimum possible face size
 
-min_size = (20, 20)
+#min_size = (20, 20)
+min_size = (2, 2)
 image_scale = 2
 haar_scale = 1.2
-min_neighbors = 2
+min_neighbors = 1
+#min_neighbors = 2
 haar_flags = 0
 
-def detect_and_draw(img, cascade, result_name):
+def detect_and_draw(img, cascade, result_name, input_name):
     # allocate temporary images
     gray = cv.CreateImage((img.width,img.height), 8, 1)
     small_img = cv.CreateImage((cv.Round(img.width / image_scale),
@@ -44,8 +46,9 @@ def detect_and_draw(img, cascade, result_name):
         faces = cv.HaarDetectObjects(small_img, cascade, cv.CreateMemStorage(0),
                                      haar_scale, min_neighbors, haar_flags, min_size)
         t = cv.GetTickCount() - t
-        print "detection time = %gms" % (t/(cv.GetTickFrequency()*1000.))
+        #print "detection time = %gms" % (t/(cv.GetTickFrequency()*1000.))
         if faces:
+            #print "found a face!"
             for ((x, y, w, h), n) in faces:
                 # the input to cv.HaarDetectObjects was resized, so scale the 
                 # bounding box of each face and convert it to two CvPoints
@@ -53,22 +56,31 @@ def detect_and_draw(img, cascade, result_name):
                 pt2 = (int((x + w) * image_scale), int((y + h) * image_scale))
                 #cv.Rectangle(img, pt1, pt2, cv.RGB(255, 0, 0), 3, 8, 0)
                 
-                cropped = cv.CreateImage((int(w * image_scale * 0.75), int(h * image_scale * 0.75)), img.depth, img.nChannels)
-                src_region = cv.GetSubRect(img, (int(x * image_scale) + int(x * image_scale * 0.25), int(y * image_scale) + int(y * image_scale * 0.5), int(w * image_scale * 0.75), int(h * image_scale * 0.75)))
+                cropped = cv.CreateImage((int(w * image_scale), int(h * image_scale)), img.depth, img.nChannels)
+                src_region = cv.GetSubRect(img, (int(x * image_scale), int(y * image_scale), int(w * image_scale), int(h * image_scale)))
                 cv.Copy(src_region, cropped)
-                if int(w * image_scale * 0.75) >= 60 and int(w * image_scale * 0.75) >= 60:
-                    print "saving image {0}".format(result_name)
-                    cv.SaveImage(result_name,cropped) 
+                #if int(w * image_scale) >= 60 and int(w * image_scale) >= 60:
+                print "saving image from {0} to {1}".format(input_name, result_name)
+                cv.SaveImage(result_name,cropped)
 
     #cv.ShowImage("result", img)
 
 if __name__ == '__main__':
-    cascade = cv.Load("haarcascade_frontalface_alt.xml")
-    
-    for input_name in glob.glob("fg-net/*.JPG"):
-    #for input_name in glob.glob("all_google/*.jpg"):
-    #for input_name in (["all_google/01_1.jpg"]):
+    cascade_type = 'mcs_eyepair_big'
+    #cascade_type = 'profileface'
+    image_dir = 'test'
+    #image_dir = 'fg-net'
+    image_type = 'jpg'
+    #image_type = 'JPG'
+    cascade = cv.Load("haarcascades/haarcascade_{0}.xml".format(cascade_type))
+    ctr = 1
+    for input_name in glob.glob("images/{0}/*.{1}".format(image_dir, image_type)):
         image = cv.LoadImage(input_name, 1)
-        result_name = "{0}_cropped.jpg".format(input_name)
-        print "Cropping face from {0}...".format(input_name)
-        detect_and_draw(image, cascade, result_name)
+        #age = (input_name[18:20])
+        #age = (input_name[14:16])
+        age = (input_name[12:14])
+        #result_name = "{0}_{1}_output.jpg".format(input_name, cascade_type)
+        result_name = "images/output/{0}_{1}.jpg".format(age, ctr)
+        ctr = ctr + 1
+        #print "Cropping face from {0}...".format(input_name)
+        detect_and_draw(image, cascade, result_name, input_name)

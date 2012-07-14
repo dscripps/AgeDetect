@@ -82,7 +82,8 @@ def mkKernel(ks, sig, th , lm, ps):
     sigma = np.float(sig)/ks
     x_theta = x * np.cos(theta) + y * np.sin(theta)
     y_theta = -x * np.sin(theta) + y * np.cos(theta)
-    return np.array(np.exp(-0.5*(x_theta**2 + 0.3*y_theta**2)/sigma**2)*np.cos(2*np.pi*x_theta/lmbd + psi),dtype=np.float32)
+    #return np.array(np.exp(-0.5*(x_theta**2 + 0.3*y_theta**2)/sigma**2)*np.cos(2*np.pi*x_theta/lmbd + psi),dtype=np.float32)
+    return np.array(np.exp(-0.5*(x_theta**2 + y_theta**2)/sigma**2)*np.cos(2*np.pi*x_theta/lmbd + psi),dtype=np.float32)
 
 #save s1 image for further processing
 def Process_S1(image_file, im, src_f, case, is_test):
@@ -94,12 +95,14 @@ def Process_S1(image_file, im, src_f, case, is_test):
     if not kernel_size % 2:
         kernel_size += 1
     sig = pos_sigma
-    lm = 0.5+pos_lm/100.
+    #lm = 0.5+pos_lm/100.
+    lm = pos_lm
     for pos_th in pos_th_arr:
         th = pos_th
         ps = pos_psi
         kernel = mkKernel(kernel_size, sig, th, lm, ps )
-        kernelimg = kernel/2.+0.5
+        #kernelimg = kernel/2.+0.5
+        kernelimg = kernel
         dest = cv2.filter2D(src_f, cv2.CV_32F,kernel)
         n = np.asarray(dest)
         if is_test:
@@ -111,6 +114,7 @@ def Process_S1(image_file, im, src_f, case, is_test):
 #apply s1 step to all images in database
 def S1(is_test):
     for image_file in glob.glob("*.jpg"):
+    #for image_file in glob.glob("00_143.jpg"):
         #file_path = "fg-net/images/{0}".format(image_file)
         file_path = image_file
         print "Processing {0}".format(file_path)
@@ -171,8 +175,7 @@ def Process_C1(kernel_size, src_f):
 
 def C1(is_test):
     if is_test:
-        #file_name = "../../output/c1_test/faces.data"
-        file_name = "../../output/c1_test/faces_fgnet.data"
+        file_name = "../../output/c1_test/faces_test_2.data"
     else:
         #file_name = "../../output/c1/faces.data"
         file_name = "../../output/c1/faces_fgnet.data"
@@ -180,17 +183,17 @@ def C1(is_test):
     #image_file = "001a02.jpg"
     for image_file in glob.glob("*.jpg"):
         print "Processing {0}...".format(image_file)
-        age = int(image_file[4:6])
-        #age = int(image_file[0:2])
+        #age = int(image_file[4:6])
+        age = int(image_file[0:2])
         
         for case in c1_inputs:
             case = c1_inputs[0]
             pool_grid_size = case[0]
-            #for rotation in ['0', '45', '90', '135']:
-            for rotation in ['0']:
+            for rotation in ['0', '45', '90', '135']:
+            #for rotation in ['0']:
                 if is_test:
-                    s1_img1 = "../../output/s1_test/{0}_{1}_0.JPG".format(image_file, case[1])
-                    s1_img2 = "../../output/s1_test/{0}_{1}_0.JPG".format(image_file, case[2])
+                    s1_img1 = "../../output/s1_test/{0}_{1}_{2}.JPG".format(image_file, case[1], rotation)
+                    s1_img2 = "../../output/s1_test/{0}_{1}_{2}.JPG".format(image_file, case[2], rotation)
                 else:
                     s1_img1 = "../../output/s1/{0}_{1}_{2}.JPG".format(image_file, case[1], rotation)
                     s1_img2 = "../../output/s1/{0}_{1}_{2}.JPG".format(image_file, case[2], rotation)
@@ -216,14 +219,14 @@ def C1(is_test):
     f.close()
     
 def train():
-    #data_file = "../../output/c1/faces_fgnet.data"
-    data_file = "../../output/c1/faces.data"
+    data_file = "../../output/c1/faces_fgnet.data"
+    #data_file = "../../output/c1/faces.data"
     data = SparseDataSet(data_file, labelsColumn = -1, numericLabels = True)
     s = SVR()
     s.train(data)
     #print 'saving results...'
     #s.save('training_results')
-    test_data = SparseDataSet('../../output/c1_test/faces.data', labelsColumn = -1, numericLabels = True)
+    test_data = SparseDataSet('../../output/c1_test/faces_test_2.data', labelsColumn = -1, numericLabels = True)
     results = s.test(test_data)
     predicted_results = results[0].Y
     actual_results = results[0].givenY
@@ -238,13 +241,11 @@ def train():
 
 
 if __name__ == '__main__':
-    is_test = False
+    is_test = True
     if is_test:
-        #os.chdir("fg-net/test_set_1")
-        os.chdir("fg-net/test_set_2")
+        os.chdir("input/train_2")
     else:
-        #os.chdir("fg-net/google_images")
-        os.chdir("fg-net/fg-net")
-    S1(is_test)
-    C1(is_test)
-    #train()
+        os.chdir("input/test_set_3")
+    #S1(is_test)
+    #C1(is_test)
+    train()
