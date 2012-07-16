@@ -5,6 +5,7 @@ import cv2
 import math
 import glob
 import os
+import sys
 from PyML import *
 from PyML.classifiers.svm import SVR
 from PyML.classifiers.svm import loadSVM
@@ -86,7 +87,7 @@ def mkKernel(ks, sig, th , lm, ps):
     return np.array(np.exp(-0.5*(x_theta**2 + y_theta**2)/sigma**2)*np.cos(2*np.pi*x_theta/lmbd + psi),dtype=np.float32)
 
 #save s1 image for further processing
-def Process_S1(image_file, im, src_f, case, is_test):
+def Process_S1(image_file, im, src_f, case):
     filter_size = case[0]
     pos_sigma = case[1]
     pos_lm = case[2]
@@ -105,14 +106,11 @@ def Process_S1(image_file, im, src_f, case, is_test):
         kernelimg = kernel
         dest = cv2.filter2D(src_f, cv2.CV_32F,kernel)
         n = np.asarray(dest)
-        if is_test:
-            output_file = "../../output/s1_test/{0}_{1}_{2}.jpg".format(image_file, str(filter_size), str(pos_th))
-        else:
-            output_file = "../../output/s1/{0}_{1}_{2}.jpg".format(image_file, str(filter_size), str(pos_th))
+        output_file = "../../output/s1/{0}_{1}_{2}.jpg".format(image_file, str(filter_size), str(pos_th))
         cv.SaveImage(output_file, cv.fromarray(dest*255))
 
 #apply s1 step to all images in database
-def S1(is_test):
+def S1():
     for image_file in glob.glob("*.jpg"):
     #for image_file in glob.glob("00_143.jpg"):
         #file_path = "fg-net/images/{0}".format(image_file)
@@ -123,7 +121,7 @@ def S1(is_test):
         src = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         src_f = np.array(src, dtype=np.float32) / 255.
         for case in s1_inputs:
-            Process_S1(image_file, im, src_f, case, is_test)
+            Process_S1(image_file, im, src_f, case)
 
 #given 2 arrays of same length, returns greater value at each position
 def max_values(src_1, src_2):
@@ -173,17 +171,11 @@ def Process_C1(kernel_size, src_f):
     return c_values
     
 
-def C1(is_test):
-    if is_test:
-        file_name = "../../output/c1_test/faces_test_2.data"
-    else:
-        #file_name = "../../output/c1/faces.data"
-        file_name = "../../output/c1/faces_fgnet.data"
+def C1(test_set):
+    file_name = "../../output/c1/{0}.data".format(test_set)
     f = open(file_name, 'w')
-    #image_file = "001a02.jpg"
     for image_file in glob.glob("*.jpg"):
         print "Processing {0}...".format(image_file)
-        #age = int(image_file[4:6])
         age = int(image_file[0:2])
         
         for case in c1_inputs:
@@ -191,12 +183,8 @@ def C1(is_test):
             pool_grid_size = case[0]
             for rotation in ['0', '45', '90', '135']:
             #for rotation in ['0']:
-                if is_test:
-                    s1_img1 = "../../output/s1_test/{0}_{1}_{2}.JPG".format(image_file, case[1], rotation)
-                    s1_img2 = "../../output/s1_test/{0}_{1}_{2}.JPG".format(image_file, case[2], rotation)
-                else:
-                    s1_img1 = "../../output/s1/{0}_{1}_{2}.JPG".format(image_file, case[1], rotation)
-                    s1_img2 = "../../output/s1/{0}_{1}_{2}.JPG".format(image_file, case[2], rotation)
+                s1_img1 = "../../output/s1/{0}_{1}_{2}.JPG".format(image_file, case[1], rotation)
+                s1_img2 = "../../output/s1/{0}_{1}_{2}.JPG".format(image_file, case[2], rotation)
                 image1 = cv2.imread(s1_img1,1);
                 src1 = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
                 src_f1 = np.array(src1, dtype=np.float32) / 255.
@@ -208,7 +196,6 @@ def C1(is_test):
                 #then the "STD" operation is performed on the max map using the c1 pool grid size
                 kernel_size = int(math.floor(len(src_max[0])/pool_grid_size))
                 c_values = Process_C1(kernel_size, src_max)
-                #f.write(str(c_values).strip("[]"))
                 f.write(",".join([str(x) for x in c_values]))
                 f.write(",")
         
@@ -218,34 +205,28 @@ def C1(is_test):
     
     f.close()
     
-def train():
-    data_file = "../../output/c1/faces_fgnet.data"
-    #data_file = "../../output/c1/faces.data"
-    data = SparseDataSet(data_file, labelsColumn = -1, numericLabels = True)
-    s = SVR()
-    s.train(data)
-    #print 'saving results...'
-    #s.save('training_results')
-    test_data = SparseDataSet('../../output/c1_test/faces_test_2.data', labelsColumn = -1, numericLabels = True)
-    results = s.test(test_data)
-    predicted_results = results[0].Y
-    actual_results = results[0].givenY
-    total = 0
-    for i in range(0, len(predicted_results)):
-        total = total + abs(int(predicted_results[i]-actual_results[i]))
-        print "{0},{1} ({2})".format(str(int(predicted_results[i])), str(int(actual_results[i])), str(int(predicted_results[i]-actual_results[i])))
-    avg = total / len(predicted_results)
-    print avg
+#def train(test_set):
+#    data_file = "../../output/c1/faces_google.data"
+#    data = SparseDataSet(data_file, labelsColumn = -1, numericLabels = True)
+#    s = SVR()
+#    s.train(data)
+#    test_data = SparseDataSet("../../output/c1_test/{0}.data".format(test_set), labelsColumn = -1, numericLabels = True)
+#    results = s.test(test_data)
+#    predicted_results = results[0].Y
+#    actual_results = results[0].givenY
+#    total = 0
+#    for i in range(0, len(predicted_results)):
+#        total = total + abs(int(predicted_results[i]-actual_results[i]))
+#        print "{0},{1} ({2})".format(str(int(predicted_results[i])), str(int(actual_results[i])), str(int(predicted_results[i]-actual_results[i])))
+#    avg = total / len(predicted_results)
+#    print avg
     
 
 
 
 if __name__ == '__main__':
-    is_test = True
-    if is_test:
-        os.chdir("input/train_2")
-    else:
-        os.chdir("input/test_set_3")
-    #S1(is_test)
-    #C1(is_test)
-    train()
+    test_set = sys.argv[1]
+    os.chdir("input/{0}".format(test_set))
+    S1()
+    C1(test_set)
+    #train(test_set)
