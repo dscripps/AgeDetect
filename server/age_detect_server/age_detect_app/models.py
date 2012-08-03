@@ -1,7 +1,7 @@
 # encoding: utf-8
 from django.db import models
 import json
-import numpy as np
+#import numpy as np
 import cv
 import cv2
 import math
@@ -220,7 +220,7 @@ class UploadedImage(models.Model):
     def to_json(self):
         #self.S1()
         #self.C1()
-        self.Image_to_data()
+        #self.Image_to_data()
         result = {}
         result['age'] = 33
         #result['age'] = self.get_age()
