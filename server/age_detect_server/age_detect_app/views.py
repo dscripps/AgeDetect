@@ -13,18 +13,17 @@ class UploadFileForm(forms.Form):
 def upload_file(request):
     c = {}
     c.update(csrf(request))
-    #if request.method == 'POST':
-    if request.method == 'PUT':
-        #form = UploadFileForm(request.POST, request.FILES)
-        #if form.is_valid():
-        uploadedImage = UploadedImage()
-        uploadedImage.cleanup()#remove all tmp files used to get age
-        #uploadedImage.handle_uploaded_file(request.POST['udid'], request.FILES['image'])
-        uploadedImage.handle_uploaded_file('12345', request.raw_post_data)
-        result = uploadedImage.to_json()#get age
-        #uploadedImage.cleanup()#remove all tmp files used to get age
-        response = HttpResponse(result, mimetype = "application/json")
-        return response
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            uploadedImage = UploadedImage()
+            uploadedImage.cleanup()#remove all tmp files used to get age
+            #uploadedImage.handle_uploaded_file(request.POST['udid'], request.FILES['image'])
+            uploadedImage.handle_uploaded_file('12345', request.FILES['image'])
+            result = uploadedImage.to_json()#get age
+            #uploadedImage.cleanup()#remove all tmp files used to get age
+            response = HttpResponse(result, mimetype = "application/json")
+            return response
     else:
         form = UploadFileForm()
         c['form'] = form
