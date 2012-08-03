@@ -14,9 +14,97 @@ from PyML.classifiers.svm import SVR
 from PyML.classifiers.svm import loadSVM
 
 
+
+class AgeSVR:
+    
+    class __impl:
+        
+        svr = None
+        
+        def setSVR(self, dataset):
+            data = SparseDataSet(dataset, labelsColumn = -1, numericLabels = True)
+            self.svr = SVR()
+            self.svr.train(data)
+            
+        def getSVR(self):
+            return self.svr
+
+    
+    
+    # storage for the instance reference
+    __instance = None
+    
+
+    def __init__(self, dataset):
+        """ Create singleton instance """
+        # Check whether we already have an instance
+        if AgeSVR.__instance is None:
+            # Create and remember instance
+            AgeSVR.__instance = AgeSVR.__impl()
+            AgeSVR.__instance.setSVR(dataset)
+
+        # Store instance reference as the only member in the handle
+        self.__dict__['_AgeSVR__instance'] = AgeSVR.__instance
+
+    def __getattr__(self, attr):
+        """ Delegate access to implementation """
+        return getattr(self.__instance, attr)
+
+    def __setattr__(self, attr, value):
+        """ Delegate access to implementation """
+        return setattr(self.__instance, attr, value)
+    
+class AgeSVM:
+    
+    class __impl:
+        
+        svm = None
+        ages = [[0,15,None],[16,100,None],[0,3,None],[4,12,None],[13,19,None],[20,29,None],[30,39,None],[40,49,None],[50,100,None]]
+        #ages = [[0,15,None],[16,100,None]]
+        
+        def setSVMs(self):
+            for age_range in self.ages:
+                dataset = "training_data/face_bw_{0}_{1}.data".format(age_range[0], age_range[1])
+                data = SparseDataSet(dataset, labelsColumn = -1)
+                s = SVM()
+                s.train(data)
+                age_range[2] = s
+            
+        def getSVMs(self):
+            return self.ages
+
+    
+    
+    # storage for the instance reference
+    __instance = None
+    
+
+    def __init__(self):
+        """ Create singleton instance """
+        # Check whether we already have an instance
+        if AgeSVM.__instance is None:
+            # Create and remember instance
+            AgeSVM.__instance = AgeSVM.__impl()
+            AgeSVM.__instance.setSVMs()
+
+        # Store instance reference as the only member in the handle
+        self.__dict__['_AgeSVM__instance'] = AgeSVM.__instance
+
+    def __getattr__(self, attr):
+        """ Delegate access to implementation """
+        return getattr(self.__instance, attr)
+
+    def __setattr__(self, attr, value):
+        """ Delegate access to implementation """
+        return setattr(self.__instance, attr, value)
+
+
+
+    
 class UploadedImage(models.Model):
     #training data for SVR to generate age
-    training_data_file = "training_data/training_data.data"
+    training_data_file = "training_data/face_bw.data"
+    cascade_file = "training_data/haarcascades/haarcascade_frontalface_alt2.xml"
     image_upload_dir = "tmp/uploads"
     image_process_dir = "tmp/processing"
     image_results_dir = "tmp/results"
@@ -57,25 +145,136 @@ class UploadedImage(models.Model):
     pos_th_arr = [0,45,90,135] #orientations for s_1 step
     pos_psi = 90
     
+    
+    
+    
+    def detect_and_draw(self):
+        
+        face_size_coef = 2./3.
+        min_size = (40,40)
+        image_scale = 2
+        haar_scale = 1.2
+        min_neighbors = 2
+        haar_flags = 0
+        
+        print self.cascade_file
+        cascade = cv.Load(self.cascade_file)
+        
+        img = cv.LoadImage(self.file, 1)
+        
+        #ctr = ctr + 1
+        print "Cropping face for {0}...".format(self.file)
+        
+        # allocate temporary images
+        gray = cv.CreateImage((img.width,img.height), 8, 1)
+        small_img = cv.CreateImage((cv.Round(img.width / image_scale),
+                       cv.Round (img.height / image_scale)), 8, 1)
+    
+        # convert color input image to grayscale
+        cv.CvtColor(img, gray, cv.CV_BGR2GRAY)
+    
+        # scale input image for faster processing
+        cv.Resize(gray, small_img, cv.CV_INTER_LINEAR)
+    
+        cv.EqualizeHist(small_img, small_img)
+    
+        if(cascade):
+            t = cv.GetTickCount()
+            faces = cv.HaarDetectObjects(small_img, cascade, cv.CreateMemStorage(0),
+                                         haar_scale, min_neighbors, haar_flags, min_size)
+            t = cv.GetTickCount() - t
+            #print "detection time = %gms" % (t/(cv.GetTickFrequency()*1000.))
+            if faces:
+                #print "found a face!"
+                for ((x, y, w, h), n) in faces:
+                    
+                    cropped = cv.CreateImage((int(w * face_size_coef * image_scale), int(h * face_size_coef * image_scale)), img.depth, img.nChannels)
+                    src_region = cv.GetSubRect(img, (int(x * image_scale) + int(w * (1-face_size_coef)), int(y * image_scale) + int(h * (1-face_size_coef)), int(w * face_size_coef * image_scale), int(h * face_size_coef * image_scale)))
+                    cv.Copy(src_region, cropped)
+                    
+                    #scale image
+                    thumbnail = cv.CreateMat(min_size[0], min_size[1], cv.CV_8UC3)
+                    
+                    cv.Resize(cropped, thumbnail)
+                    
+                    cv.SaveImage(self.file,thumbnail)
+                    #convert to greyscale
+                    image = cv2.imread(self.file, cv2.CV_LOAD_IMAGE_GRAYSCALE)
+                    cv2.imwrite(self.file, image)
+    
+    
     def handle_uploaded_file(self, udid, f):
         self.file = "{0}/{1}.jpg".format(self.image_upload_dir, udid)
         self.udid = udid
+        #save file on server
         with open(self.file, 'wb+') as destination:
             for chunk in f.chunks():
                 destination.write(chunk)
+        #save files for processing age
+        #self.detect_and_draw()
     
     def get_age(self):
-        self.S1()
-        self.C1()
         return int(round(self.guess_age()))
         
     
     def to_json(self):
-        age = self.get_age()
+        #self.S1()
+        #self.C1()
+        self.Image_to_data()
         result = {}
-        result['age'] = age
+        result['age'] = 33
+        #result['age'] = self.get_age()
+        #result['is_age'] = self.is_age()
         return json.dumps(result)
     
+    def test(self):
+        ageSVM = AgeSVM()
+        ages = ageSVM.getSVMs()
+        result = {}
+        for age_range in ages:
+            s = age_range[2]
+            
+            
+            test_dataset = "training_data/face_bw_test_{0}_{1}.data".format(age_range[0], age_range[1])
+            test_data = SparseDataSet(test_dataset, labelsColumn = -1)
+            results = s.test(test_data)
+            predicted_results = results[0].Y
+            actual_results = results[0].givenY
+            print "\n\n\n\n\n\n"
+            print "*****{0}-{1}*****".format(age_range[0], age_range[1])
+            print results
+            print predicted_results
+            print actual_results
+            print "\n\n\n\n\n\n"
+            #key = "{0}_{1}".format(age_range[0],age_range[1])
+            #result[key] = predicted_results[0]
+        
+        
+        ageSVR = AgeSVR(self.training_data_file)
+        s = ageSVR.getSVR()
+        print "\n\n\n\n\n\n****REGRESSION****"
+        test_dataset = SparseDataSet("training_data/face_bw_test.data", labelsColumn = -1, numericLabels = True)
+        results = s.test(test_dataset)
+        predicted_results = results[0].Y
+        actual_results = results[0].givenY
+        print results
+        print predicted_results
+        print actual_results
+        print "\n\n\n\n\n\n"
+        
+        return
+    
+    
+    def Image_to_data(self):
+        logging.warning("Creating data matrix for {0}...".format(self.file))
+        
+        f = open("{0}/{1}.data".format(self.image_results_dir, self.udid), 'w')
+        image = cv2.imread(self.file, cv2.CV_LOAD_IMAGE_GRAYSCALE)
+        age = 0
+        np_array = np.array(image, dtype=np.float32) / 255.
+        np_array_str = ",".join([str(x) for x in self.flatten(np_array)])
+        f.write("{0},{1}\n".format(np_array_str, age))
+        f.close()
     
     #get the mean of a list of numbers
     def mean(self, numberList):
@@ -196,46 +395,63 @@ class UploadedImage(models.Model):
         f = open(file_name, 'w')
         logging.warning("Creating data matrix for {0}...".format(self.file))
         
-        for case in self.c1_inputs:
-            pool_grid_size = case[0]
-            for rotation in self.pos_th_arr:
-                s1_img1 = "{0}/{1}_{2}_{3}.JPG".format(self.image_process_dir, self.udid, case[1], rotation)
-                s1_img2 = "{0}/{1}_{2}_{3}.JPG".format(self.image_process_dir, self.udid, case[2], rotation)
-                image1 = cv2.imread(s1_img1,1);
-                src1 = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
-                src_f1 = np.array(src1, dtype=np.float32) / 255.
-                image2 = cv2.imread(s1_img2,1);
-                src2 = cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY)
-                src_f2 = np.array(src2, dtype=np.float32) / 255.
-                #first, the MAX pooling is performed on the 2 maps resulting in a maximum map
-                src_max = self.max_values(src_f1, src_f2)
-                #then the "STD" operation is performed on the max map using the c1 pool grid size
-                kernel_size = int(math.floor(len(src_max[0])/pool_grid_size))
-                c_values = self.Process_C1(kernel_size, src_max)
-                f.write(",".join([str(x) for x in c_values]))
-                f.write(",")
-            
-            
-            f.write(str(100))#set 100 as age (not using this, since we're not training anymore)
+        for class_type in [0,1]:
+            for case in self.c1_inputs:
+                pool_grid_size = case[0]
+                for rotation in self.pos_th_arr:
+                    s1_img1 = "{0}/{1}_{2}_{3}.JPG".format(self.image_process_dir, self.udid, case[1], rotation)
+                    s1_img2 = "{0}/{1}_{2}_{3}.JPG".format(self.image_process_dir, self.udid, case[2], rotation)
+                    image1 = cv2.imread(s1_img1,1);
+                    src1 = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
+                    src_f1 = np.array(src1, dtype=np.float32) / 255.
+                    image2 = cv2.imread(s1_img2,1);
+                    src2 = cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY)
+                    src_f2 = np.array(src2, dtype=np.float32) / 255.
+                    #first, the MAX pooling is performed on the 2 maps resulting in a maximum map
+                    src_max = self.max_values(src_f1, src_f2)
+                    #then the "STD" operation is performed on the max map using the c1 pool grid size
+                    kernel_size = int(math.floor(len(src_max[0])/pool_grid_size))
+                    c_values = self.Process_C1(kernel_size, src_max)
+                    f.write(",".join([str(x) for x in c_values]))
+                    f.write(",")
+                
+                
+            f.write(str(class_type))#set 0 or 1 as age (not using this, since we're not training anymore)
             f.write("\n")
         
         f.close()
         
     def guess_age(self):
-        data = SparseDataSet(self.training_data_file, labelsColumn = -1, numericLabels = True)
-        s = SVR()
-        s.train(data)
+        ageSVR = AgeSVR(self.training_data_file)
+        s = ageSVR.getSVR()
+#        data = SparseDataSet(self.training_data_file, labelsColumn = -1, numericLabels = True)
+#        s = SVR()
+#        s.train(data)
         test_data = SparseDataSet("{0}/{1}.data".format(self.image_results_dir, self.udid), labelsColumn = -1, numericLabels = True)
         results = s.test(test_data)
         predicted_results = results[0].Y
         actual_results = results[0].givenY
         return predicted_results[0]
-        #total = 0
-        #for i in range(0, len(predicted_results)):
-        #    total = total + abs(int(predicted_results[i]-actual_results[i]))
-        #    print "{0},{1} ({2})".format(str(int(predicted_results[i])), str(int(actual_results[i])), str(int(predicted_results[i]-actual_results[i])))
-        #avg = total / len(predicted_results)
-        #print avg
+
+    def is_age(self):
+        ageSVM = AgeSVM()
+        ages = ageSVM.getSVMs()
+        result = {}
+        for age_range in ages:
+            s = age_range[2]
+            #data = SparseDataSet(self.training_data_file, labelsColumn = -1)
+            #s = SVM()
+            #s.train(data)
+            #s.save('SVM_is_baby.svm')
+            #s.load(self.baby_svm, data)
+            test_data = SparseDataSet("{0}/{1}.data".format(self.image_results_dir, self.udid), labelsColumn = -1)
+            results = s.test(test_data)
+            predicted_results = results[0].Y
+            actual_results = results[0].givenY
+            key = "{0}_{1}".format(age_range[0],age_range[1])
+            result[key] = predicted_results[0]
+        return result
+        
     
     #remove all files used in processing
     def cleanup(self):
