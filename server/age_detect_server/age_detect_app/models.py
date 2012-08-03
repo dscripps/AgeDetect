@@ -9,6 +9,7 @@ import glob
 import os
 import sys
 import logging
+from age_detect import settings
 #from PyML import *
 #from PyML.classifiers.svm import SVR
 #from PyML.classifiers.svm import loadSVM
@@ -105,7 +106,7 @@ class UploadedImage(models.Model):
     #training data for SVR to generate age
     training_data_file = "training_data/face_bw.data"
     cascade_file = "training_data/haarcascades/haarcascade_frontalface_alt2.xml"
-    image_upload_dir = "tmp/uploads"
+    image_upload_dir = settings.MEDIA_ROOT + "tmp/uploads"
     image_process_dir = "tmp/processing"
     image_results_dir = "tmp/results"
     udid = 0
