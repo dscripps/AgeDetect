@@ -9,9 +9,9 @@ import glob
 import os
 import sys
 import logging
-from PyML import *
-from PyML.classifiers.svm import SVR
-from PyML.classifiers.svm import loadSVM
+#from PyML import *
+#from PyML.classifiers.svm import SVR
+#from PyML.classifiers.svm import loadSVM
 
 
 
