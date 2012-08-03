@@ -2,8 +2,8 @@
 from django.db import models
 import json
 #import numpy as np
-import cv
-import cv2
+#import cv
+#import cv2
 import math
 import glob
 import os
