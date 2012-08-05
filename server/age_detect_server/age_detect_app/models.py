@@ -1,4 +1,7 @@
 # encoding: utf-8
+import sys
+sys.path.insert(0, '/usr/local/lib/python2.6/site-packages')
+import os
 from django.db import models
 import json
 import numpy as np
@@ -6,7 +9,6 @@ import cv
 import cv2
 import math
 import glob
-import os
 import sys
 import logging
 from age_detect import settings
