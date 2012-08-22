@@ -9,5 +9,13 @@
 #import <UIKit/UIKit.h>
 
 @interface ResultsViewController : UIViewController
+{
+    IBOutlet UILabel *ageLabel;
+}
+
+
+
+- (IBAction)okButton:(id)sender;
+- (IBAction)foreheadButton:(id)sender;
 
 @end

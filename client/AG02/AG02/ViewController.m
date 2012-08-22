@@ -44,6 +44,8 @@
     DirectionsViewController *DirectionsView = [[DirectionsViewController alloc] initWithNibName:@"DirectionsViewController" bundle:nil];
     DirectionsView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentModalViewController:DirectionsView animated:YES];
+    [self viewDidUnload];
+    self = nil;
     //NSLog(@"START PRESSED!");
 }
 

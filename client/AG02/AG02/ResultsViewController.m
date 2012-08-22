@@ -7,6 +7,8 @@
 //
 
 #import "ResultsViewController.h"
+#import "ViewController.h"
+#import "DetailsViewController.h"
 
 @interface ResultsViewController ()
 
@@ -39,6 +41,24 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+//MARK: IBactions
+- (IBAction)okButton:(id)sender
+{
+    ViewController *cV = [[[ViewController alloc] initWithNibName:@"ViewController_iPhone" bundle:nil] autorelease];
+    cV.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentModalViewController:cV animated:YES];
+    [self viewDidUnload];
+}
+
+- (IBAction)foreheadButton:(id)sender
+{
+    DetailsViewController *cV = [[[DetailsViewController alloc] initWithNibName:@"DetailsViewController" bundle:nil] autorelease];
+    cV.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentModalViewController:cV animated:YES];
+    [self viewDidUnload];
+    
 }
 
 @end

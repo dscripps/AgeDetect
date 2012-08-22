@@ -11,6 +11,7 @@
 #import "FaceCaptureViewController.h"
 #import "CaptureConfirmViewController.h"
 
+
 #import <AudioToolbox/AudioToolbox.h>
 
 // Name of face cascade resource file without xml extension
@@ -58,6 +59,13 @@ const int kHaarOptions =  CV_HAAR_FIND_BIGGEST_OBJECT | CV_HAAR_DO_ROUGH_SEARCH;
     if (!_eyeCascade.load([eyeCascadePath UTF8String])) {
         NSLog(@"Could not load eye cascade: %@", eyeCascadePath);
     }
+    
+    //progress = [[MBRoundProgressView alloc] initWithFrame:CGRectMake(
+    //    self.view.frame.size.width/2-15, 30, 30, 30
+    //)];
+    //progress.hidden = YES;
+    //[self.view addSubview:progress];
+    //[progress release];
     
 
 }
@@ -108,6 +116,8 @@ const int kHaarOptions =  CV_HAAR_FIND_BIGGEST_OBJECT | CV_HAAR_DO_ROUGH_SEARCH;
     }
     //note the time (give user a few seconds before checking faces)
     NSTimeInterval secondsElapsed = [[NSDate date] timeIntervalSinceDate:start];
+    //progress.hidden = NO;
+    //[progress setProgress:secondsElapsed];
     if (secondsElapsed < 1) {
         return;
     }
@@ -200,6 +210,7 @@ const int kHaarOptions =  CV_HAAR_FIND_BIGGEST_OBJECT | CV_HAAR_DO_ROUGH_SEARCH;
 {
     
     if(faces.size() < 1) {
+        //progress.hidden = YES;
         start = nil;//reset time
         return;
     }
@@ -272,6 +283,7 @@ const int kHaarOptions =  CV_HAAR_FIND_BIGGEST_OBJECT | CV_HAAR_DO_ROUGH_SEARCH;
     _eyeCascade.detectMultiScale(RoiImg, eyes, 1.1, 2, kHaarOptions, cv::Size(20, 15));
     if(eyes.size() < 1) {
         start = nil;//reset time
+        //progress.hidden = YES;
         [CATransaction commit];
         return;
     }
@@ -328,6 +340,7 @@ const int kHaarOptions =  CV_HAAR_FIND_BIGGEST_OBJECT | CV_HAAR_DO_ROUGH_SEARCH;
     
     if(eyes.size() < 1) {
         start = nil;//reset time
+        //progress.hidden = YES;
         [CATransaction commit];
         return;
     }

@@ -13,6 +13,7 @@
 {
     UIProgressHUD *progressHUD;
     int last_camera;
+    UIImage *faceImage;
 }
 
 - (void)initStuff:(UIImage *)img camera:(int)camera;

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "VCViewController.h"
+#import "MBProgressHUD.h"
 
 //@interface FaceCaptureViewController : UIViewController
 @interface FaceCaptureViewController : VCViewController
@@ -20,6 +21,7 @@
     
     NSDate *start;
     
+	MBRoundProgressView* progress;
     
 }
 
