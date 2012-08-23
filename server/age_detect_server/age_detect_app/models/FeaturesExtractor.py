@@ -6,6 +6,7 @@ import cv2
 from optparse import OptionParser
 import glob
 from django.db import models
+from age_detect import settings
 
 
 
@@ -34,8 +35,8 @@ class FeaturesExtractor(models.Model):
         min_neighbors = 2
         haar_flags = 0
         
-        cascade = cv.Load("training_data/haarcascades/haarcascade_frontalface_alt2.xml")
-        eyeCascade = cv.Load("training_data/haarcascades/haarcascade_eye.xml")
+        cascade = cv.Load("{0}training_data/haarcascades/haarcascade_frontalface_alt2.xml".format(settings.PROJECT_ROOT))
+        eyeCascade = cv.Load("{0}training_data/haarcascades/haarcascade_eye.xml".format(settings.PROJECT_ROOT))
         #noseCascade = cv.Load("training_data/haarcascades/haarcascade_mcs_nose.xml")
         
         # allocate temporary images
