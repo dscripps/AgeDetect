@@ -34,8 +34,8 @@ class FeaturesExtractor(models.Model):
         min_neighbors = 2
         haar_flags = 0
         
-        cascade = cv.Load("/training_data/haarcascades/haarcascade_frontalface_alt2.xml")
-        eyeCascade = cv.Load("/training_data/haarcascades/haarcascade_eye.xml")
+        cascade = cv.Load("training_data/haarcascades/haarcascade_frontalface_alt2.xml")
+        eyeCascade = cv.Load("training_data/haarcascades/haarcascade_eye.xml")
         #noseCascade = cv.Load("training_data/haarcascades/haarcascade_mcs_nose.xml")
         
         # allocate temporary images
