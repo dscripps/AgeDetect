@@ -1,5 +1,7 @@
 from django.conf.urls import patterns, include, url
 
+from age_detect import settings
+
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
@@ -16,4 +18,8 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
+    
+    url(r'^uploads/(?P<path>.*)$', 'django.views.static.serve', {
+        'document_root': "{0}uploads".format(settings.MEDIA_ROOT),
+    })
 )
