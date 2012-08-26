@@ -7,15 +7,23 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ProgressViewController.h"
 
 @interface ResultsViewController : UIViewController
 {
+    UIProgressHUD *progressHUD;
     IBOutlet UILabel *ageLabel;
+    NSString *currentPart;
 }
 
 
+- (void)initStuff;
 
 - (IBAction)okButton:(id)sender;
+- (IBAction)aboutButton:(id)sender;
 - (IBAction)foreheadButton:(id)sender;
+- (IBAction)leftEyeButton:(id)sender;
+- (IBAction)rightEyeButton:(id)sender;
+- (IBAction)mouthButton:(id)sender;
 
 @end

@@ -87,6 +87,8 @@
 		638D5EED15DF672B003E0F8E /* DetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 638D5EEB15DF672B003E0F8E /* DetailsViewController.xib */; };
 		638D5EF215DF6F87003E0F8E /* sample.png in Resources */ = {isa = PBXBuildFile; fileRef = 638D5EF115DF6F87003E0F8E /* sample.png */; };
 		639227FC15CE8B0A00075BA3 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 639227FB15CE8B0A00075BA3 /* MBProgressHUD.m */; };
+		639537E115EA522A00ACFDBB /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 639537DF15EA522A00ACFDBB /* AboutViewController.m */; };
+		639537E215EA522A00ACFDBB /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 639537E015EA522A00ACFDBB /* AboutViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -212,6 +214,9 @@
 		638D5EF115DF6F87003E0F8E /* sample.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sample.png; sourceTree = "<group>"; };
 		639227FA15CE8B0A00075BA3 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		639227FB15CE8B0A00075BA3 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		639537DE15EA522A00ACFDBB /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AboutViewController.h; path = ../AboutViewController.h; sourceTree = "<group>"; };
+		639537DF15EA522A00ACFDBB /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AboutViewController.m; path = ../AboutViewController.m; sourceTree = "<group>"; };
+		639537E015EA522A00ACFDBB /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AboutViewController.xib; path = ../AboutViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -327,6 +332,7 @@
 				63161F8D15CBB3EF00A6EA82 /* CaptureConfirm */,
 				63863BF015CA003200D9863F /* Results */,
 				638D5EE715DF6703003E0F8E /* Details */,
+				639537E415EA522F00ACFDBB /* About */,
 				6378D36615C8A91200D187D2 /* AppDelegate.h */,
 				6378D36715C8A91200D187D2 /* AppDelegate.m */,
 				63863BC515C9630900D9863F /* Resources */,
@@ -486,6 +492,16 @@
 			name = ProgressView;
 			sourceTree = "<group>";
 		};
+		639537E415EA522F00ACFDBB /* About */ = {
+			isa = PBXGroup;
+			children = (
+				639537DE15EA522A00ACFDBB /* AboutViewController.h */,
+				639537DF15EA522A00ACFDBB /* AboutViewController.m */,
+				639537E015EA522A00ACFDBB /* AboutViewController.xib */,
+			);
+			name = About;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -571,6 +587,7 @@
 				633E18D115DF4A5200955722 /* half_button_highlight@2x.png in Resources */,
 				638D5EED15DF672B003E0F8E /* DetailsViewController.xib in Resources */,
 				638D5EF215DF6F87003E0F8E /* sample.png in Resources */,
+				639537E215EA522A00ACFDBB /* AboutViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -613,6 +630,7 @@
 				638444BA15CC174200D213A1 /* SBJsonWriter.m in Sources */,
 				639227FC15CE8B0A00075BA3 /* MBProgressHUD.m in Sources */,
 				638D5EEC15DF672B003E0F8E /* DetailsViewController.m in Sources */,
+				639537E115EA522A00ACFDBB /* AboutViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

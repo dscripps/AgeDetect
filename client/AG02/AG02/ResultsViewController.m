@@ -9,6 +9,7 @@
 #import "ResultsViewController.h"
 #import "ViewController.h"
 #import "DetailsViewController.h"
+#import "AboutViewController.h"
 
 @interface ResultsViewController ()
 
@@ -20,7 +21,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        
     }
     return self;
 }
@@ -29,6 +30,10 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    //NSLog(@"here!");
+    //NSLog(@"%@", [[NSUserDefaults standardUserDefaults] stringForKey:@"age"]);
+    //set age
+    ageLabel.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"age"];
 }
 
 - (void)viewDidUnload
@@ -43,6 +48,17 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+- (void)showProgressIndicator:(NSString *)text {
+	//[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	self.view.userInteractionEnabled = FALSE;
+	if(!progressHUD) {
+		CGFloat w = 160.0f, h = 120.0f;
+		progressHUD = [[UIProgressHUD alloc] initWithFrame:CGRectMake((self.view.frame.size.width-w)/2, (self.view.frame.size.height-h)/2, w, h)];
+		[progressHUD setText:text];
+		[progressHUD showInView:self.view];
+	}
+}
+
 //MARK: IBactions
 - (IBAction)okButton:(id)sender
 {
@@ -52,13 +68,58 @@
     [self viewDidUnload];
 }
 
-- (IBAction)foreheadButton:(id)sender
+- (IBAction)aboutButton:(id)sender
 {
-    DetailsViewController *cV = [[[DetailsViewController alloc] initWithNibName:@"DetailsViewController" bundle:nil] autorelease];
+    AboutViewController *cV = [[[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil] autorelease];
     cV.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentModalViewController:cV animated:YES];
     [self viewDidUnload];
+}
+
+
+- (void)openNewView
+{
+    
+    DetailsViewController *cV = [[[DetailsViewController alloc] initWithNibName:@"DetailsViewController" bundle:nil] autorelease];
+    cV.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentModalViewController:cV animated:YES];
+    [cV initStuff:currentPart];
+    //[cV initStuff:@"forehead"];
+    [self viewDidUnload];
     
 }
+
+
+- (void) openDetails:(NSString*)part {
+    
+    currentPart = part;
+    [self showProgressIndicator:@"Loading"];
+    //[self performSelectorInBackground:@selector(openNewView) withObject:nil];
+	//[self performSelectorOnMainThread:@selector(openNewView) withObject:nil waitUntilDone:NO];
+    //[self performSelector:@selector(openNewView) withObject:nil];
+    //[self performSelector: afterDelay:1 inModes:nil];
+    [self performSelector:@selector(openNewView) withObject:nil afterDelay:1.0];
+
+}
+
+
+
+- (IBAction)foreheadButton:(id)sender {
+    [self openDetails:@"forehead"];
+}
+
+- (IBAction)leftEyeButton:(id)sender {
+    [self openDetails:@"left_eye"];
+}
+
+- (IBAction)rightEyeButton:(id)sender {
+    [self openDetails:@"right_eye"];
+}
+
+- (IBAction)mouthButton:(id)sender {
+    [self openDetails:@"nose_mouth"];
+}
+
+
 
 @end

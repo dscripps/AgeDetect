@@ -17,6 +17,8 @@
 
 - (void)viewDidLoad
 {
+    //save unique ID 
+    [[NSUserDefaults standardUserDefaults] setObject:[self createUUID] forKey:@"uuid"];
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
 }
@@ -41,12 +43,35 @@
 // start button
 - (IBAction)start:(id)sender
 {
+    
     DirectionsViewController *DirectionsView = [[DirectionsViewController alloc] initWithNibName:@"DirectionsViewController" bundle:nil];
     DirectionsView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentModalViewController:DirectionsView animated:YES];
     [self viewDidUnload];
     self = nil;
     //NSLog(@"START PRESSED!");
+}
+
+- (NSString *)createUUID
+{
+    // Create universally unique identifier (object)
+    CFUUIDRef uuidObject = CFUUIDCreate(kCFAllocatorDefault);
+    
+    // Get the string representation of CFUUID object.
+    NSString *uuidStr = [(NSString *)CFUUIDCreateString(kCFAllocatorDefault, uuidObject) autorelease];
+    
+    // If needed, here is how to get a representation in bytes, returned as a structure
+    // typedef struct {
+    //   UInt8 byte0;
+    //   UInt8 byte1;
+    //   ...
+    //   UInt8 byte15;
+    // } CFUUIDBytes;
+    CFUUIDBytes bytes = CFUUIDGetUUIDBytes(uuidObject);
+    
+    CFRelease(uuidObject);
+    
+    return uuidStr;
 }
 
 

@@ -9,7 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface DetailsViewController : UIViewController
+{
+    IBOutlet UIImageView *detailImageView;
+}
 
+- (void) initStuff:(NSString*)part;
 - (IBAction)returnButton:(id)sender;
 - (IBAction)saveButton:(id)sender;
 

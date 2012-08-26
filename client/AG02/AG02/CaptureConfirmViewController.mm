@@ -52,13 +52,20 @@
     
     faceImage = [img retain];
     // scaling set to 2.0 makes the image 1/2 the size. 
-    //UIImage *scaledImage = [UIImage imageWithCGImage:[faceImage CGImage] scale:1.0 orientation:UIImageOrientationLeftMirrored];
-    UIImage *scaledImage = [UIImage imageWithCGImage:[faceImage CGImage] scale:1.5 orientation:UIImageOrientationLeftMirrored];
+    UIImage *scaledImage = [UIImage imageWithCGImage:[faceImage CGImage] scale:1.0 orientation:UIImageOrientationLeftMirrored];
+    //UIImage *scaledImage = [UIImage imageWithCGImage:[faceImage CGImage] scale:10 orientation:UIImageOrientationLeftMirrored];
+    
+    //crop image
+    CGRect cropRect = CGRectMake(0,0,100,100);
+    CGImageRef imageRef = CGImageCreateWithImageInRect([scaledImage CGImage], cropRect);
+    // or use the UIImage wherever you like
+    UIImage *croppedImage = [UIImage imageWithCGImage:imageRef];
+    CGImageRelease(imageRef);
     
     CGSize screenSize = [[UIScreen mainScreen] bounds].size;
     
     UIImageView *myImageView = [[UIImageView alloc] initWithImage:scaledImage];
-    [myImageView setFrame:CGRectMake(screenSize.width*0.125, 6, screenSize.width*0.75, screenSize.height*0.75)];
+    [myImageView setFrame:CGRectMake(screenSize.width*0.20, 100, screenSize.width*0.60, screenSize.height*0.60)];
     
     //CGAffineTransform rotate = CGAffineTransformMakeRotation(1.57079633);
     //[myImageView setTransform:rotate];
@@ -111,12 +118,14 @@
 	// setting up the URL to post to
 	NSString *urlString = @"http://ec2-176-34-8-245.ap-northeast-1.compute.amazonaws.com/upload/";
     
+    NSString *uuid = [[NSUserDefaults standardUserDefaults] stringForKey:@"uuid"];
+    NSString *uuid_jpg = [NSString stringWithFormat:@"%@", uuid];
     
-    
+    //NSLog(@"id is %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"uuid"]);
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:urlString]];
     [request setRequestMethod:@"POST"];
-    [request setPostValue:@"5678" forKey:@"udid"];
-    [request setData:UIImageJPEGRepresentation(faceImage, 1.0f) withFileName:@"5678.jpg" andContentType:@"image/jpeg" forKey:@"image"];
+    [request setPostValue:uuid forKey:@"udid"];
+    [request setData:UIImageJPEGRepresentation(faceImage, 1.0f) withFileName:uuid_jpg andContentType:@"image/jpeg" forKey:@"image"];
     [request setDelegate:self];
     [request startAsynchronous];
     [self showProgressIndicator:@"Loading"];
@@ -137,7 +146,9 @@
     NSDictionary *responseDict = [responseString JSONValue];
     
     NSString *age = [responseDict valueForKey:@"age"];
-    NSLog(@"%@",age);
+    //save age for use later in the app
+    [[NSUserDefaults standardUserDefaults] setObject:age forKey:@"age"];
+    //NSLog(@"%@",age);
     
     ResultsViewController *cV = [[[ResultsViewController alloc] initWithNibName:@"ResultsViewController" bundle:nil] autorelease];
     cV.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
