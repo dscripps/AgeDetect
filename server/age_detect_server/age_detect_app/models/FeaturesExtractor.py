@@ -3,6 +3,7 @@ import sys
 import os
 import cv2.cv as cv
 import cv2
+import numpy as np
 from optparse import OptionParser
 import glob
 from django.db import models
@@ -13,10 +14,20 @@ from age_detect import settings
 class FeaturesExtractor(models.Model):
     
     
-    def detect_and_draw(self, result_name, input_name):
+    
+    def detect_and_draw(self, result_name, input_name, need_rotate):
         
+        img_orig = cv.LoadImage(input_name, 1)
         
-        img = cv.LoadImage(input_name, 1)
+        if need_rotate:
+            #from iphone, rotate image first
+            img = cv.CreateImage((img_orig.height,img_orig.width), img_orig.depth, img_orig.channels) # transposed image
+            cv.Transpose(img_orig,img)
+            cv.Flip(img,img,flipMode=1)
+        else:
+            img = img_orig
+        #self.save_image(timg, input_name, result_name + "rotated.jpg")
+        
         
         # Parameters for haar detection
         # From the API:
@@ -60,6 +71,7 @@ class FeaturesExtractor(models.Model):
         if faces:
             #print "found a face!"
             for ((x, y, w, h), n) in faces:
+                print "face!"
                 # the input to cv.HaarDetectObjects was resized, so scale the 
                 # bounding box of each face and convert it to two CvPoints
                 
@@ -84,6 +96,7 @@ class FeaturesExtractor(models.Model):
                     
                     # For each eye found
                     for eye in eyes:
+                        print "eye!"
                         #figure out if this is the left eye or right eye
                         if left_eye is None:
                             left_eye = eye
@@ -96,7 +109,8 @@ class FeaturesExtractor(models.Model):
                 
                 #fix eyes
                 if left_eye and right_eye:
-                    if len(eyes) > 2:
+                    #if len(eyes) > 2:
+                    if False:
                         left_eye = None
                         right_eye = None
                     else:

@@ -131,7 +131,7 @@ class UploadedImage(models.Model):
         #save each part of face as separate file on server
         featuresExtractor = FeaturesExtractor()
         result_name = "{0}/{1}_result".format(self.image_upload_dir, udid)
-        featuresExtractor.detect_and_draw(result_name, self.file)
+        featuresExtractor.detect_and_draw(result_name, self.file, True)
         
         
         
