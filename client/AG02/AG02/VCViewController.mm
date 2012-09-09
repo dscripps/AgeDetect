@@ -211,24 +211,10 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         cv::Mat mat(videoRect.size.height, videoRect.size.width, CV_8UC1, baseAddress, 0);
         
         
-        size_t bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer); 
         size_t width = CVPixelBufferGetWidth(pixelBuffer); 
         size_t height = CVPixelBufferGetHeight(pixelBuffer);  
         
         
-        /*
-        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceGray(); 
-        CGDataProviderRef  dataProvider = CGDataProviderCreateWithData(NULL, baseAddress,
-                                                                       height * bytesPerRow, NULL);
-        CGImageRef newImage = CGImageCreate(
-            width, height, 8, 8, bytesPerRow,
-            colorSpace, kCGImageAlphaNone, dataProvider, NULL, NO, kCGRenderingIntentDefault
-        );
-        
-        
-        CGDataProviderRelease(dataProvider);
-        CGColorSpaceRelease(colorSpace);
-        */
         CGColorSpaceRef colourSpace = CGColorSpaceCreateDeviceGray();
         CGContextRef context = 
         CGBitmapContextCreate(baseAddress,
@@ -241,15 +227,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         // get an image of the context, which is something
         // CoreGraphics can draw from...
         CGImageRef inputImage = CGBitmapContextCreateImage(context);
-        
-        //UIImage *image = [UIImage imageWithCGImage:inputImage];
-        
-
-        
-        
-        
-        
-        
+                
         [self processFrame:mat img:[UIImage imageWithCGImage:inputImage] videoRect:videoRect videoOrientation:videoOrientation];
         
         CGImageRelease(inputImage);

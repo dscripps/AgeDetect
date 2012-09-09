@@ -60,6 +60,9 @@ const int kHaarOptions =  CV_HAAR_FIND_BIGGEST_OBJECT | CV_HAAR_DO_ROUGH_SEARCH;
         NSLog(@"Could not load eye cascade: %@", eyeCascadePath);
     }
     
+    
+    self.camera = 1;
+    
     //progress = [[MBRoundProgressView alloc] initWithFrame:CGRectMake(
     //    self.view.frame.size.width/2-15, 30, 30, 30
     //)];
