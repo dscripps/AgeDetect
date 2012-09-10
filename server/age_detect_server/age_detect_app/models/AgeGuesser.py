@@ -40,7 +40,7 @@ class AgeGuesser(models.Model):
         if is_male:
             #load male age datasets
             is_youth_model.load("{0}train/data/male_is_youth.data".format(settings.PROJECT_ROOT))
-#            is_old_model.load("{0}train/data/male_is_old.data".format(settings.PROJECT_ROOT))
+            is_old_model.load("{0}train/data/male_is_old.data".format(settings.PROJECT_ROOT))
 #            decade_model.load("{0}train/data/male_decade.data".format(settings.PROJECT_ROOT))
 #        else:
 #            #load female age datasets
