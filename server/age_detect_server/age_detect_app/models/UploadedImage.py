@@ -36,11 +36,12 @@ class UploadedImage(models.Model):
         
     
     def get_age(self):
-        ageGuesser = AgeGuesser()
-        image_file = "{0}/{1}_resultface_aligned.jpg".format(self.image_upload_dir, self.udid)
-        image = ageGuesser.get_image(image_file)
-        guessed_age = ageGuesser.guess_age(image)
-        return guessed_age[2]
+        return 1
+#        ageGuesser = AgeGuesser()
+#        image_file = "{0}/{1}_resultface_aligned.jpg".format(self.image_upload_dir, self.udid)
+#        image = ageGuesser.get_image(image_file)
+#        guessed_age = ageGuesser.guess_age(image)
+#        return guessed_age[2]
     
     def to_json(self):
         result = {}
