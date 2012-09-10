@@ -32,8 +32,7 @@ class AgeGuesser(models.Model):
         decade_model = cv2.createFisherFaceRecognizer()#14-19=10,20-29=20,30=39=30s,40-49=40
         
         
-        is_male_model.load("{0}train/data/is_male.data".format(settings.PROJECT_ROOT))
-        
+        #is_male_model.load("{0}train/data/is_male.data".format(settings.PROJECT_ROOT))
         #first, predict if male or female
         #is_male = (is_male_model.predict(image)[0] == 1)
         is_male = True
@@ -41,8 +40,8 @@ class AgeGuesser(models.Model):
         if is_male:
             #load male age datasets
             is_youth_model.load("{0}train/data/male_is_youth.data".format(settings.PROJECT_ROOT))
-            is_old_model.load("{0}train/data/male_is_old.data".format(settings.PROJECT_ROOT))
-            decade_model.load("{0}train/data/male_decade.data".format(settings.PROJECT_ROOT))
+#            is_old_model.load("{0}train/data/male_is_old.data".format(settings.PROJECT_ROOT))
+#            decade_model.load("{0}train/data/male_decade.data".format(settings.PROJECT_ROOT))
 #        else:
 #            #load female age datasets
 #            is_youth_model.load("{0}train/data/female_is_youth.data".format(settings.PROJECT_ROOT))
