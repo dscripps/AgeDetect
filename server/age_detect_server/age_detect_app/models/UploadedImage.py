@@ -40,15 +40,15 @@ class UploadedImage(models.Model):
         image_file = "{0}/{1}_resultface_aligned.jpg".format(self.image_upload_dir, self.udid)
         image = ageGuesser.get_image(image_file)
         guessed_age = ageGuesser.guess_age(image)
-        male = 'f'
+        male = 'F'
         if guessed_age['is_male']:
-            male = 'm'
-        youth = ''
+            male = 'M'
+        youth = 'y'
         if guessed_age['is_youth']:
-            youth = 'y'
-        old =''
+            youth = 'Y'
+        old ='o'
         if guessed_age['is_old']:
-            old = 'o'
+            old = 'O'
         return "{0}{1}{2}".format(male,youth,old)
     
     def to_json(self):
