@@ -34,11 +34,11 @@ class AgeGuesser(models.Model):
         
         
         is_male_model.load("{0}train/data/is_male.data".format(settings.PROJECT_ROOT))
-#        
-#        #first, predict if male or female
-#        #is_male = (is_male_model.predict(image)[0] == 1)
-#        is_male = True
-#        #confidence = predicted_label[1]
+        
+        #first, predict if male or female
+        is_male = (is_male_model.predict(image)[0] == 1)
+        #is_male = True
+        #confidence = predicted_label[1]
 #        if is_male:
 #            #load male age datasets
 #            is_youth_model.load("{0}train/data/male_is_youth.data".format(settings.PROJECT_ROOT))
