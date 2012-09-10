@@ -42,5 +42,5 @@ if __name__ == "__main__":
         age = file[0:2]
         
         guessed_age = ageGuesser.guess_age(image)
-        print "{0},{1}".format(age, guessed_age[2])
+        print "{0},{1}".format(age, guessed_age)
     

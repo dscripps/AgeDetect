@@ -26,14 +26,24 @@ class AgeGuesser(models.Model):
     
     def guess_age(self, image):
         
-        guessed_age = [0, 0, 0] #guessed age, min age, max age
+        guessed_age = {
+            'min':0,
+            'max':0,
+            'est_age':0,
+            'decade':0,
+            'is_youth':False,
+            'is_old':False,
+            'is_20s':False,
+            'is_30s':False
+        }
         
         
         is_male_model = cv2.createFisherFaceRecognizer()
+        decade_model = cv2.createFisherFaceRecognizer()#14-19=10,20-29=20,30=39=30s,40-49=40
         is_youth_model = cv2.createFisherFaceRecognizer()#is youth? (4-13 yes, 19+ no)
         is_old_model = cv2.createFisherFaceRecognizer()#is old (10-25 no, 40+ yes)
-        decade_model = cv2.createFisherFaceRecognizer()#14-19=10,20-29=20,30=39=30s,40-49=40
-        
+        is_20s_model = cv2.createFisherFaceRecognizer()
+        is_30s_model = cv2.createFisherFaceRecognizer()
         
         is_male_model.load("{0}train/data/is_male.data".format(settings.PROJECT_ROOT))
         
@@ -43,29 +53,54 @@ class AgeGuesser(models.Model):
         #confidence = predicted_label[1]
         if is_male:
             #load male age datasets
+            decade_model.load("{0}train/data/male_decade.data".format(settings.PROJECT_ROOT))
             is_youth_model.load("{0}train/data/male_is_youth.data".format(settings.PROJECT_ROOT))
             is_old_model.load("{0}train/data/male_is_old.data".format(settings.PROJECT_ROOT))
-            decade_model.load("{0}train/data/male_decade.data".format(settings.PROJECT_ROOT))
+            is_20s_model.load("{0}train/data/male_is_20s.data".format(settings.PROJECT_ROOT))
+            is_30s_model.load("{0}train/data/male_is_30s.data".format(settings.PROJECT_ROOT))
         else:
             #load female age datasets
+            decade_model.load("{0}train/data/female_decade.data".format(settings.PROJECT_ROOT))
             is_youth_model.load("{0}train/data/female_is_youth.data".format(settings.PROJECT_ROOT))
             is_old_model.load("{0}train/data/female_is_old.data".format(settings.PROJECT_ROOT))
-            decade_model.load("{0}train/data/female_decade.data".format(settings.PROJECT_ROOT))
+            
         
         #guess age
-        is_youth = (is_youth_model.predict(image)[0] == 1)
-        is_old = (is_old_model.predict(image)[0]  == 1)
         
+        guessed_age['is_youth'] = (is_youth_model.predict(image)[0] == 1)
+        guessed_age['is_old'] = (is_old_model.predict(image)[0]  == 1)
         
-        
-        if is_youth and not is_old:
-            guessed_age = [0, 14, 14]
-        elif is_old and not is_youth:
-            guessed_age = [40, 60, random.randint(40, 50)]
+        if guessed_age['is_youth'] and not guessed_age['is_old']:
+            guessed_age['min'] = 0
+            guessed_age['max'] = 14
+            guessed_age['est_age'] = 14
+        elif guessed_age['is_old'] and not guessed_age['is_youth']:
+            guessed_age['min'] = 40
+            guessed_age['max'] = 60
+            guessed_age['est_age'] = random.randint(40, 50)
         else:
-            #image is neither young nor old, guess the decade
+            #image is neither young nor old
+            #guess the decade
             decade = decade_model.predict(image)[0]
-            guessed_age = [decade, decade+9, random.randint(decade, decade+9)]
+            guessed_age['decade'] = decade
+            
+            total_cats = 1
+            total_age = decade+5
+            
+            #guess 20s/30s
+            guessed_age['is_20s'] = (is_20s_model.predict(image)[0] == 1)
+            if guessed_age['is_20s']:
+                total_cats = total_cats + 1
+                total_age = total_age + 25
+            guessed_age['is_30s'] = (is_30s_model.predict(image)[0] == 1)
+            if guessed_age['is_30s']:
+                total_cats = total_cats + 1
+                total_age = total_age + 35
+            #guessed_age['min'] = decade
+            #guessed_age['max'] = decade+9
+            
+            #guessed_age['est_age'] = random.randint(decade, decade+5)
+            guessed_age['est_age'] = int(total_age/total_cats)
             
         return guessed_age
     

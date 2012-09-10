@@ -19,6 +19,22 @@ def read_images(path, sz=None):
         files.append(name_arr[len(name_arr)-1])
     return [X,files]
 
+#def normalize(X, low, high, dtype=None):
+#    """Normalizes a given array in X to a value between low and high."""
+#    X = np.asarray(X)
+#    minX, maxX = np.min(X), np.max(X)
+#    # normalize to [0...1].    
+#    X = X - float(minX)
+#    X = X / float((maxX - minX))
+#    # scale to [low...high].
+#    X = X * (high-low)
+#    X = X + low
+#    if dtype is None:
+#        return np.asarray(X)
+#    return np.asarray(X, dtype=dtype)
+
+
+
 if __name__ == "__main__":
     
     
@@ -31,6 +47,15 @@ if __name__ == "__main__":
     
     model = cv2.createFisherFaceRecognizer()
     model.load(data_file)
+    
+    #eigenvectors = model.getMat("eigenvectors")
+    #for i in xrange(min(len(X), 16)):
+    #i = 0
+    #eigenvector_i = eigenvectors[:,i].reshape(X[0].shape)
+    #eigenvector_i_norm = normalize(eigenvector_i, 0, 255, dtype=np.uint8)
+    #cv2.imshow("eigenface", cv2.applyColorMap(eigenvector_i_norm, cv2.COLORMAP_JET))
+    #cv2.imshow("face", X[i])
+    #cv2.waitKey(0)
     
     for i in range(0,len(X)):
         
