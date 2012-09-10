@@ -25,7 +25,7 @@ class AgeGuesser(models.Model):
     def guess_age(self, image):
         
         guessed_age = [0, 0, 0] #guessed age, min age, max age
-        return guessed_age
+        
         
         is_male_model = cv2.createFisherFaceRecognizer()
         is_youth_model = cv2.createFisherFaceRecognizer()#is youth? (4-13 yes, 19+ no)
