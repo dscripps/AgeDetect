@@ -36,7 +36,6 @@ def read_images(path, sz=None):
         im = cv2.imread(filename, cv2.IMREAD_GRAYSCALE)
         answer = get_correct_answer(filename)
         if answer > 0:
-            #don't want to include this image
             image_data = np.asarray(im, dtype=np.uint8)
             #if testSample is None:
             #    #print "{0}".format(filename)

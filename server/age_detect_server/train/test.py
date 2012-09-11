@@ -56,14 +56,22 @@ if __name__ == "__main__":
     #cv2.imshow("eigenface", cv2.applyColorMap(eigenvector_i_norm, cv2.COLORMAP_JET))
     #cv2.imshow("face", X[i])
     #cv2.waitKey(0)
-    
+    ones = 0
+    twos = 0
     for i in range(0,len(X)):
         
         image = X[i]
         file = files[i]
         predicted_label = model.predict(image)
-        print "{0}={1},{2}".format(file, predicted_label[0], predicted_label[1])
+        #print "{0}={1},{2}".format(file, predicted_label[0], predicted_label[1])
+        print predicted_label[0]
+        
+        if predicted_label[0] == 1:
+            ones = ones + 1
+        else:
+            twos = twos + 1
         predicted_answer = predicted_label[0]
         confidence = predicted_label[1]
-    
+    print ones
+    print twos
     
