@@ -20,6 +20,7 @@
     //save unique ID 
     [[NSUserDefaults standardUserDefaults] setObject:[self createUUID] forKey:@"uuid"];
     [super viewDidLoad];
+    
 	// Do any additional setup after loading the view, typically from a nib.
 }
 

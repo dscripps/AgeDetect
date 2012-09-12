@@ -117,7 +117,8 @@
 }
 
 - (IBAction)mouthButton:(id)sender {
-    [self openDetails:@"nose_mouth"];
+    //[self openDetails:@"nose_mouth"];
+    [self openDetails:@"face_aligned"];
 }
 
 

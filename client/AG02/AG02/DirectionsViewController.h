@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "ProgressViewController.h"
-
+#import "GADBannerView.h"
 
 
 @interface DirectionsViewController : UIViewController {
     UIProgressHUD *progressHUD;
+    
+    GADBannerView *bannerView_;
 }
     
 - (IBAction)okButton:(id)sender;

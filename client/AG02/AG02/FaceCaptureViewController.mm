@@ -70,6 +70,24 @@ const int kHaarOptions =  CV_HAAR_FIND_BIGGEST_OBJECT | CV_HAAR_DO_ROUGH_SEARCH;
     //[self.view addSubview:progress];
     //[progress release];
     
+    // Create a view of the standard size at the bottom of the screen.
+    // Available AdSize constants are explained in GADAdSize.h.
+    //bannerView_ = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
+    // Initialize the banner at the bottom of the screen.
+    //CGPoint origin = CGPointMake(0.0, self.view.frame.size.height + 20 - CGSizeFromGADAdSize(kGADAdSizeBanner).height);
+    CGPoint origin = CGPointMake(0.0, self.view.frame.size.height - 40);
+    
+    // Use predefined GADAdSize constants to define the GADBannerView.
+    bannerView_ = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner origin:origin];
+    
+    // Specify the ad's "unit identifier." This is your AdMob Publisher ID.
+    bannerView_.adUnitID = @"a1504f4c90f2afe";
+    
+    // Let the runtime know which UIViewController to restore after taking
+    // the user wherever the ad goes and add it to the view hierarchy.
+    bannerView_.rootViewController = self;
+    [self.view addSubview:bannerView_];
+    
 
 }
 

@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GADBannerView.h"
 
 @interface DetailsViewController : UIViewController
 {
     IBOutlet UIImageView *detailImageView;
+    GADBannerView *bannerView_;
 }
 
 - (void) initStuff:(NSString*)part;
