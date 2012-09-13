@@ -21,10 +21,12 @@ class UploadedImage(models.Model):
     image_results_dir = "tmp/results"
     udid = 0
     file = ''
+    language = 'en'
     
-    def handle_uploaded_file(self, udid, f):
+    def handle_uploaded_file(self, udid, f, language):
         self.file = "{0}/{1}.jpg".format(self.image_upload_dir, udid)
         self.udid = udid
+        self.language = language
         #save file on server
         with open(self.file, 'wb+') as destination:
             for chunk in f.chunks():
@@ -39,22 +41,21 @@ class UploadedImage(models.Model):
         ageGuesser = AgeGuesser()
         image_file = "{0}/{1}_resultface_aligned.jpg".format(self.image_upload_dir, self.udid)
         image = ageGuesser.get_image(image_file)
-        guessed_age = ageGuesser.guess_age(image)
-        male = 'F'
-        if guessed_age['is_male']:
-            male = 'M'
-        youth = 'y'
-        if guessed_age['is_youth']:
-            youth = 'Y'
-        old ='o'
-        if guessed_age['is_old']:
-            old = 'O'
-        return "{0}{1}{2}".format(male,youth,old)
+        guessed_age = ageGuesser.guess_age(image, self.language)
+        return guessed_age
+#        male = 'F'
+#        if guessed_age['is_male']:
+#            male = 'M'
+#        youth = 'y'
+#        if guessed_age['is_youth']:
+#            youth = 'Y'
+#        old ='o'
+#        if guessed_age['is_old']:
+#            old = 'O'
+#        return "{0}{1}{2}".format(male,youth,old)
     
     def to_json(self):
-        result = {}
-        #result['age'] = 33
-        result['age'] = self.get_age()
+        result = self.get_age()
         return json.dumps(result)
     
     

@@ -24,17 +24,34 @@ class AgeGuesser(models.Model):
         image_data = np.asarray(im, dtype=np.uint8)
         return image_data
     
-    def guess_age(self, image):
+    def get_message(self, guessed_age, part):
+        male = 'F'
+        if guessed_age['is_male']:
+            male = 'M'
+        youth = 'y'
+        if guessed_age['is_youth']:
+            youth = 'Y'
+        old ='o'
+        if guessed_age['is_old']:
+            old = 'O'
+        return "{0}{1}{2}".format(male,youth,old)
+        
+    def guess_age(self, image, language):
         
         guessed_age = {
             'min':0,
             'max':0,
-            'est_age':0,
+            'age':0,
             'decade':0,
             'is_youth':False,
             'is_old':False,
             'is_20s':False,
-            'is_30s':False
+            'is_30s':False,
+            'message_forehead': '',
+            'message_left_eye': '',
+            'message_right_eye': '',
+            'message_nose_mouth': '',
+            'language': language
         }
         
         
@@ -74,37 +91,43 @@ class AgeGuesser(models.Model):
         guessed_age['decade'] = decade_model.predict(image)[0]
         
         
-#        if guessed_age['is_youth'] and not guessed_age['is_old']:
-#            guessed_age['min'] = 0
-#            guessed_age['max'] = 14
-#            guessed_age['est_age'] = 14
-#        elif guessed_age['is_old'] and not guessed_age['is_youth']:
-#            guessed_age['min'] = 40
-#            guessed_age['max'] = 60
-#            guessed_age['est_age'] = random.randint(40, 50)
-#        else:
-#            #image is neither young nor old
-#            #guess the decade
-#            decade = decade_model.predict(image)[0]
-#            guessed_age['decade'] = decade
-#            
-#            total_cats = 1
-#            total_age = decade+5
-#            
-#            #guess 20s/30s
-#            
-#            if guessed_age['is_20s']:
-#                total_cats = total_cats + 1
-#                total_age = total_age + 25
-#            
-#            if guessed_age['is_30s']:
-#                total_cats = total_cats + 1
-#                total_age = total_age + 35
-#            #guessed_age['min'] = decade
-#            #guessed_age['max'] = decade+9
-#            
-#            #guessed_age['est_age'] = random.randint(decade, decade+5)
-#            guessed_age['est_age'] = int(total_age/total_cats)
+        if guessed_age['is_youth'] and not guessed_age['is_old'] and not guessed_age['is_20s'] and not guessed_age['is_30s']:
+            guessed_age['min'] = 14
+            guessed_age['max'] = 20
+            guessed_age['age'] = random.randint(14, 20)
+        elif guessed_age['is_old'] and not guessed_age['is_youth'] and not guessed_age['is_20s'] and not guessed_age['is_30s']:
+            guessed_age['min'] = 40
+            guessed_age['max'] = 60
+            guessed_age['age'] = random.randint(40, 50)
+        else:
+            #image is neither young nor old
+            #guess the decade
+            decade = decade_model.predict(image)[0]
+            guessed_age['decade'] = decade
             
+            total_cats = 1
+            total_age = decade+5
+            
+            #guess 20s/30s
+            
+            if guessed_age['is_20s']:
+                total_cats = total_cats + 1
+                total_age = total_age + 25
+            
+            if guessed_age['is_30s']:
+                total_cats = total_cats + 1
+                total_age = total_age + 35
+            #guessed_age['min'] = decade
+            #guessed_age['max'] = decade+9
+            
+            #guessed_age['age'] = random.randint(decade, decade+5)
+            guessed_age['age'] = int(total_age/total_cats)
+
+
+        guessed_age['message_forehead'] = self.get_message(guessed_age, 'forehead')
+        guessed_age['message_left_eye'] = self.get_message(guessed_age, 'left_eye')
+        guessed_age['message_right_eye'] = self.get_message(guessed_age, 'right_eye')
+        guessed_age['message_nose_mouth'] = self.get_message(guessed_age, 'nose_mouth')
+        
         return guessed_age
     
