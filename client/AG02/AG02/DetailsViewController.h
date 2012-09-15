@@ -13,10 +13,11 @@
 {
     IBOutlet UIImageView *detailImageView;
     GADBannerView *bannerView_;
+    IBOutlet UITextView *partMessage;
 }
 
 - (void) initStuff:(NSString*)part;
 - (IBAction)returnButton:(id)sender;
-- (IBAction)saveButton:(id)sender;
+//- (IBAction)saveButton:(id)sender;
 
 @end

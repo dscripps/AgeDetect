@@ -125,6 +125,7 @@
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:urlString]];
     [request setRequestMethod:@"POST"];
     [request setPostValue:uuid forKey:@"udid"];
+    [request setPostValue:@"en" forKey:@"language"];
     [request setData:UIImageJPEGRepresentation(faceImage, 1.0f) withFileName:uuid_jpg andContentType:@"image/jpeg" forKey:@"image"];
     [request setDelegate:self];
     [request startAsynchronous];
@@ -141,13 +142,21 @@
     // Use when fetching binary data
     //NSData *responseData = [request responseData];
     
-    NSLog(responseString);
+    //NSLog(responseString);
     
     NSDictionary *responseDict = [responseString JSONValue];
+    if (responseDict == NULL) {
+        [self reportError];
+        return;
+    }
     
     NSString *age = [responseDict valueForKey:@"age"];
-    //save age for use later in the app
+    //save results for use later in the app
     [[NSUserDefaults standardUserDefaults] setObject:age forKey:@"age"];
+    [[NSUserDefaults standardUserDefaults] setObject:[responseDict valueForKey:@"message_forehead"] forKey:@"message_forehead"];
+    [[NSUserDefaults standardUserDefaults] setObject:[responseDict valueForKey:@"message_left_eye"] forKey:@"message_left_eye"];
+    [[NSUserDefaults standardUserDefaults] setObject:[responseDict valueForKey:@"message_right_eye"] forKey:@"message_right_eye"];
+    [[NSUserDefaults standardUserDefaults] setObject:[responseDict valueForKey:@"message_nose_mouth"] forKey:@"message_nose_mouth"];
     //NSLog(@"%@",age);
     
     ResultsViewController *cV = [[[ResultsViewController alloc] initWithNibName:@"ResultsViewController" bundle:nil] autorelease];
@@ -155,6 +164,24 @@
     [self presentModalViewController:cV animated:YES];
     [self viewDidUnload];
 }
+
+- (void) reportError {
+    //server side error
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"ERROR" 
+                                                    message:@"Please try again" 
+                                                   delegate:self 
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+    [alert release];
+}
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    NSLog(@"%d", buttonIndex);
+    NSLog(@"alert closed!");
+    [self againButton:nil];
+}
+
+
 
 
 @end

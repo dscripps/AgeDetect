@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ProgressViewController.h"
 
-@interface CaptureConfirmViewController : UIViewController
+@interface CaptureConfirmViewController : UIViewController <UIAlertViewDelegate>
 {
     UIProgressHUD *progressHUD;
     int last_camera;

@@ -66,22 +66,36 @@
     //NSString *part = @"forehead";
     NSString *urlStr = [NSString stringWithFormat:@"http://ec2-176-34-8-245.ap-northeast-1.compute.amazonaws.com/uploads/%@_result%@.jpg", [[NSUserDefaults standardUserDefaults] stringForKey:@"uuid"], part];
     detailImageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:urlStr]]];
+    NSString *messageKey = [NSString stringWithFormat:@"message_%@", part];
+    partMessage.text = [[NSUserDefaults standardUserDefaults] stringForKey:messageKey];
+    NSLog(part);
+    NSLog(messageKey);
+    NSLog([[NSUserDefaults standardUserDefaults] stringForKey:messageKey]);
+    NSLog(@"ok");
+    /*NSString *uuid = [[NSUserDefaults standardUserDefaults] stringForKey:@"uuid"];
+    [[NSUserDefaults standardUserDefaults] setObject:[responseDict valueForKey:@"message_forehead"] forKey:@"message_forehead"];
+    [[NSUserDefaults standardUserDefaults] setObject:[responseDict valueForKey:@"message_left_eye"] forKey:@"message_left_eye"];
+    [[NSUserDefaults standardUserDefaults] setObject:[responseDict valueForKey:@"message_right_eye"] forKey:@"message_right_eye"];
+    [[NSUserDefaults standardUserDefaults] setObject:[responseDict valueForKey:@"message_nose_mouth"] forKey:@"message_nose_mouth"];*/
 }
 
 
 - (IBAction)returnButton:(id)sender
 {
-    ResultsViewController *cV = [[[ResultsViewController alloc] initWithNibName:@"ResultsViewController" bundle:nil] autorelease];
+    NSLog(@"return button");
+    /*ResultsViewController *cV = [[[ResultsViewController alloc] initWithNibName:@"ResultsViewController" bundle:nil] autorelease];
     cV.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentModalViewController:cV animated:YES];
     [self viewDidUnload];
+    NSLog(@"return button");*/
 }
 
-
+/*
 - (IBAction)saveButton:(id)sender
 {
     NSLog(@"save button here");
 }
+ */
 
 
 @end
