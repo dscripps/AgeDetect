@@ -1,3 +1,4 @@
+# encoding: utf-8
 #!/usr/bin/env python
 import os
 import sys
@@ -25,16 +26,38 @@ class AgeGuesser(models.Model):
         return image_data
     
     def get_message(self, guessed_age, part):
-        male = 'F'
+        message = ''
         if guessed_age['is_male']:
-            male = 'M'
-        youth = 'y'
-        if guessed_age['is_youth']:
-            youth = 'Y'
-        old ='o'
-        if guessed_age['is_old']:
-            old = 'O'
-        return "{0}{1}{2}".format(male,youth,old)
+            if guessed_age['is_youth']:
+                message = 'ずいぶん若い'
+            elif guessed_age['is_old']:
+                message = '渋い'
+            elif guessed_age['is_20s']:
+                message = 'イケメンの'
+            elif guessed_age['is_30s']:
+                message = '紳士な'
+            else:
+                message = '普通な'
+        else:
+            if guessed_age['is_youth']:
+                message = 'かわいい'
+            elif guessed_age['is_old']:
+                message = '年増美人の'
+            elif guessed_age['is_20s']:
+                message = 'セクシーな'
+            elif guessed_age['is_30s']:
+                message = '女性らしい'
+            else:
+                message = '普通な'
+        if part == 'forehead':
+            message = "{0}お凸".format(message)
+        elif part == 'nose_mouth':
+            message = "{0}お鼻".format(message)
+        else:
+            message = "{0}目".format(message)
+        message = "{0}ですね〜".format(message)
+        #return "{0}{1}{2}".format(male,youth,old)
+        return message
         
     def guess_age(self, image, language):
         
