@@ -17,11 +17,24 @@
 
 - (void)viewDidLoad
 {
-    //save unique ID 
-    [[NSUserDefaults standardUserDefaults] setObject:[self createUUID] forKey:@"uuid"];
+    //save unique ID
+    
+    NSString *uuid = [[NSUserDefaults standardUserDefaults] stringForKey:@"uuid"];
+    if (uuid == nil) {
+        //create new uuid
+        [[NSUserDefaults standardUserDefaults] setObject:[self createUUID] forKey:@"uuid"];
+    }
+    
+    
+
     [super viewDidLoad];
     
 	// Do any additional setup after loading the view, typically from a nib.
+    hello.text = NSLocalizedString(@"Hi There!", @"");
+    [startButton setTitle:NSLocalizedString(@"Proceed", @"") forState:UIControlStateNormal];
+    [startButton setTitle:NSLocalizedString(@"Proceed", @"") forState:UIControlStateHighlighted];
+    [startButton setTitle:NSLocalizedString(@"Proceed", @"") forState:UIControlStateDisabled];
+    [startButton setTitle:NSLocalizedString(@"Proceed", @"") forState:UIControlStateSelected];
 }
 
 - (void)viewDidUnload
@@ -55,6 +68,12 @@
 
 - (NSString *)createUUID
 {
+    CFUUIDRef theUUID = CFUUIDCreate(NULL);
+    CFStringRef string = CFUUIDCreateString(NULL, theUUID);
+    CFRelease(theUUID);
+    return [(NSString *)string autorelease];
+    
+    /*
     // Create universally unique identifier (object)
     CFUUIDRef uuidObject = CFUUIDCreate(kCFAllocatorDefault);
     
@@ -73,6 +92,7 @@
     CFRelease(uuidObject);
     
     return uuidStr;
+     */
 }
 
 

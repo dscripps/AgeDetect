@@ -29,6 +29,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    directions.text = NSLocalizedString(@"Directions", @"");
+    [startButton setTitle:NSLocalizedString(@"Proceed", @"") forState:UIControlStateNormal];
+    [startButton setTitle:NSLocalizedString(@"Proceed", @"") forState:UIControlStateHighlighted];
+    [startButton setTitle:NSLocalizedString(@"Proceed", @"") forState:UIControlStateDisabled];
+    [startButton setTitle:NSLocalizedString(@"Proceed", @"") forState:UIControlStateSelected];
+    
+    
     // Create a view of the standard size at the bottom of the screen.
     // Available AdSize constants are explained in GADAdSize.h.
     //bannerView_ = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];

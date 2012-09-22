@@ -15,6 +15,8 @@
     UIProgressHUD *progressHUD;
     
     GADBannerView *bannerView_;
+    IBOutlet UITextView *directions;
+    IBOutlet UIButton *startButton;
 }
     
 - (IBAction)okButton:(id)sender;

@@ -32,6 +32,15 @@
     //[self showProgressIndicator:@"Processing"];
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    [againButton setTitle:NSLocalizedString(@"Again", @"") forState:UIControlStateNormal];
+    [againButton setTitle:NSLocalizedString(@"Again", @"") forState:UIControlStateHighlighted];
+    [againButton setTitle:NSLocalizedString(@"Again", @"") forState:UIControlStateDisabled];
+    [againButton setTitle:NSLocalizedString(@"Again", @"") forState:UIControlStateSelected];
+    [submitButton setTitle:NSLocalizedString(@"Submit", @"") forState:UIControlStateNormal];
+    [submitButton setTitle:NSLocalizedString(@"Submit", @"") forState:UIControlStateHighlighted];
+    [submitButton setTitle:NSLocalizedString(@"Submit", @"") forState:UIControlStateDisabled];
+    [submitButton setTitle:NSLocalizedString(@"Submit", @"") forState:UIControlStateSelected];
 }
 
 - (void)viewDidUnload
@@ -39,6 +48,10 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    
+
+    
+    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -49,7 +62,6 @@
 // MARK: showing image
 
 - (void)initStuff:(UIImage *)img camera:(int)camera {
-    
     faceImage = [img retain];
     // scaling set to 2.0 makes the image 1/2 the size. 
     UIImage *scaledImage = [UIImage imageWithCGImage:[faceImage CGImage] scale:1.0 orientation:UIImageOrientationLeftMirrored];

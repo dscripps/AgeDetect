@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AboutViewController : UIViewController
+@interface AboutViewController : UIViewController {
+    
+    IBOutlet UIButton *returnButton;
+}
 
 
 - (IBAction)returnButton:(id)sender;

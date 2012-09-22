@@ -28,6 +28,11 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    [returnButton setTitle:NSLocalizedString(@"Back", @"") forState:UIControlStateNormal];
+    [returnButton setTitle:NSLocalizedString(@"Back", @"") forState:UIControlStateHighlighted];
+    [returnButton setTitle:NSLocalizedString(@"Back", @"") forState:UIControlStateDisabled];
+    [returnButton setTitle:NSLocalizedString(@"Back", @"") forState:UIControlStateSelected];
 }
 
 - (void)viewDidUnload

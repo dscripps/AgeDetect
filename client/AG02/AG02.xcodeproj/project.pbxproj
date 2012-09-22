@@ -45,11 +45,9 @@
 		6378D35815C8A91200D187D2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6378D35715C8A91200D187D2 /* UIKit.framework */; };
 		6378D35A15C8A91200D187D2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6378D35915C8A91200D187D2 /* Foundation.framework */; };
 		6378D35C15C8A91200D187D2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6378D35B15C8A91200D187D2 /* CoreGraphics.framework */; };
-		6378D36215C8A91200D187D2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6378D36015C8A91200D187D2 /* InfoPlist.strings */; };
 		6378D36415C8A91200D187D2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6378D36315C8A91200D187D2 /* main.m */; };
 		6378D36815C8A91200D187D2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6378D36715C8A91200D187D2 /* AppDelegate.m */; };
 		6378D36B15C8A91200D187D2 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6378D36A15C8A91200D187D2 /* ViewController.m */; };
-		6378D36E15C8A91200D187D2 /* ViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6378D36C15C8A91200D187D2 /* ViewController_iPhone.xib */; };
 		6384444415CC0EDC00D213A1 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6384444315CC0EDC00D213A1 /* CFNetwork.framework */; };
 		6384444615CC0F0700D213A1 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6384444515CC0F0700D213A1 /* MobileCoreServices.framework */; };
 		6384444815CC0F1600D213A1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6384444715CC0F1600D213A1 /* SystemConfiguration.framework */; };
@@ -92,6 +90,10 @@
 		639227FC15CE8B0A00075BA3 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 639227FB15CE8B0A00075BA3 /* MBProgressHUD.m */; };
 		639537E115EA522A00ACFDBB /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 639537DF15EA522A00ACFDBB /* AboutViewController.m */; };
 		639537E215EA522A00ACFDBB /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 639537E015EA522A00ACFDBB /* AboutViewController.xib */; };
+		63A4EB0716040AEF00D3210F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 63A4EB0616040AEF00D3210F /* InfoPlist.strings */; };
+		63A4EB0A16040AFC00D3210F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 63A4EB0816040AFC00D3210F /* Localizable.strings */; };
+		63A4EB0D16040B0300D3210F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 63A4EB0B16040B0300D3210F /* Localizable.strings */; };
+		63FCF9CA160409BA00A16AB3 /* ViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63FCF9C9160409BA00A16AB3 /* ViewController_iPhone.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -228,14 +230,12 @@
 		6378D35915C8A91200D187D2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6378D35B15C8A91200D187D2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		6378D35F15C8A91200D187D2 /* AG02-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AG02-Info.plist"; sourceTree = "<group>"; };
-		6378D36115C8A91200D187D2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6378D36315C8A91200D187D2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		6378D36515C8A91200D187D2 /* AG02-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AG02-Prefix.pch"; sourceTree = "<group>"; };
 		6378D36615C8A91200D187D2 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		6378D36715C8A91200D187D2 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		6378D36915C8A91200D187D2 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		6378D36A15C8A91200D187D2 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		6378D36D15C8A91200D187D2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPhone.xib; sourceTree = "<group>"; };
 		6384444315CC0EDC00D213A1 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		6384444515CC0F0700D213A1 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		6384444715CC0F1600D213A1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -313,6 +313,10 @@
 		639537DE15EA522A00ACFDBB /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AboutViewController.h; path = ../AboutViewController.h; sourceTree = "<group>"; };
 		639537DF15EA522A00ACFDBB /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AboutViewController.m; path = ../AboutViewController.m; sourceTree = "<group>"; };
 		639537E015EA522A00ACFDBB /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AboutViewController.xib; path = ../AboutViewController.xib; sourceTree = "<group>"; };
+		63A4EB0616040AEF00D3210F /* InfoPlist.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = InfoPlist.strings; sourceTree = "<group>"; };
+		63A4EB0916040AFC00D3210F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Localizable.strings; sourceTree = "<group>"; };
+		63A4EB0C16040B0300D3210F /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = Localizable.strings; sourceTree = "<group>"; };
+		63FCF9C9160409BA00A16AB3 /* ViewController_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewController_iPhone.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -654,8 +658,10 @@
 		6378D35E15C8A91200D187D2 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				63A4EB0616040AEF00D3210F /* InfoPlist.strings */,
+				63FCF9CB160409ED00A16AB3 /* ja.lproj */,
+				63FCF9C21604038D00A16AB3 /* en.lproj */,
 				6378D35F15C8A91200D187D2 /* AG02-Info.plist */,
-				6378D36015C8A91200D187D2 /* InfoPlist.strings */,
 				6378D36315C8A91200D187D2 /* main.m */,
 				6378D36515C8A91200D187D2 /* AG02-Prefix.pch */,
 			);
@@ -721,7 +727,7 @@
 			children = (
 				6378D36915C8A91200D187D2 /* ViewController.h */,
 				6378D36A15C8A91200D187D2 /* ViewController.m */,
-				6378D36C15C8A91200D187D2 /* ViewController_iPhone.xib */,
+				63FCF9C9160409BA00A16AB3 /* ViewController_iPhone.xib */,
 			);
 			name = Title;
 			sourceTree = "<group>";
@@ -812,6 +818,22 @@
 			name = About;
 			sourceTree = "<group>";
 		};
+		63FCF9C21604038D00A16AB3 /* en.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				63A4EB0816040AFC00D3210F /* Localizable.strings */,
+			);
+			path = en.lproj;
+			sourceTree = "<group>";
+		};
+		63FCF9CB160409ED00A16AB3 /* ja.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				63A4EB0B16040B0300D3210F /* Localizable.strings */,
+			);
+			path = ja.lproj;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -846,6 +868,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				ja,
 			);
 			mainGroup = 6378D34815C8A91100D187D2;
 			productRefGroup = 6378D35415C8A91200D187D2 /* Products */;
@@ -878,8 +901,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6378D36215C8A91200D187D2 /* InfoPlist.strings in Resources */,
-				6378D36E15C8A91200D187D2 /* ViewController_iPhone.xib in Resources */,
 				6371B31F15C8ADA300685FC8 /* DirectionsViewController.xib in Resources */,
 				63863BC715C9631300D9863F /* haarcascade_frontalface_alt2.xml in Resources */,
 				63863BEA15C9FDFF00D9863F /* FaceCaptureViewController.xib in Resources */,
@@ -914,6 +935,10 @@
 				638D5EED15DF672B003E0F8E /* DetailsViewController.xib in Resources */,
 				638D5EF215DF6F87003E0F8E /* sample.png in Resources */,
 				639537E215EA522A00ACFDBB /* AboutViewController.xib in Resources */,
+				63FCF9CA160409BA00A16AB3 /* ViewController_iPhone.xib in Resources */,
+				63A4EB0716040AEF00D3210F /* InfoPlist.strings in Resources */,
+				63A4EB0A16040AFC00D3210F /* Localizable.strings in Resources */,
+				63A4EB0D16040B0300D3210F /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -963,20 +988,20 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		6378D36015C8A91200D187D2 /* InfoPlist.strings */ = {
+		63A4EB0816040AFC00D3210F /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				6378D36115C8A91200D187D2 /* en */,
+				63A4EB0916040AFC00D3210F /* en */,
 			);
-			name = InfoPlist.strings;
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
-		6378D36C15C8A91200D187D2 /* ViewController_iPhone.xib */ = {
+		63A4EB0B16040B0300D3210F /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				6378D36D15C8A91200D187D2 /* en */,
+				63A4EB0C16040B0300D3210F /* ja */,
 			);
-			name = ViewController_iPhone.xib;
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

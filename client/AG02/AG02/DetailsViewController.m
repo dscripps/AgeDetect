@@ -29,12 +29,17 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    [returnButton setTitle:NSLocalizedString(@"Back", @"") forState:UIControlStateNormal];
+    [returnButton setTitle:NSLocalizedString(@"Back", @"") forState:UIControlStateHighlighted];
+    [returnButton setTitle:NSLocalizedString(@"Back", @"") forState:UIControlStateDisabled];
+    [returnButton setTitle:NSLocalizedString(@"Back", @"") forState:UIControlStateSelected];
+    
     // Create a view of the standard size at the bottom of the screen.
     // Available AdSize constants are explained in GADAdSize.h.
     //bannerView_ = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
     // Initialize the banner at the bottom of the screen.
     //CGPoint origin = CGPointMake(0.0, self.view.frame.size.height + 20 - CGSizeFromGADAdSize(kGADAdSizeBanner).height);
-    CGPoint origin = CGPointMake(0.0, self.view.frame.size.height - 50);
+    CGPoint origin = CGPointMake(0.0, 0.0);
     
     // Use predefined GADAdSize constants to define the GADBannerView.
     bannerView_ = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner origin:origin];
@@ -45,6 +50,10 @@
     // Let the runtime know which UIViewController to restore after taking
     // the user wherever the ad goes and add it to the view hierarchy.
     bannerView_.rootViewController = self;
+    [self.view addSubview:bannerView_];
+    
+    // Initiate a generic request to load it with an ad.
+    [bannerView_ loadRequest:[GADRequest request]];
     [self.view addSubview:bannerView_];
 
     
@@ -82,20 +91,13 @@
 
 - (IBAction)returnButton:(id)sender
 {
-    NSLog(@"return button");
-    /*ResultsViewController *cV = [[[ResultsViewController alloc] initWithNibName:@"ResultsViewController" bundle:nil] autorelease];
+    //NSLog(@"return button");
+    ResultsViewController *cV = [[[ResultsViewController alloc] initWithNibName:@"ResultsViewController" bundle:nil] autorelease];
     cV.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentModalViewController:cV animated:YES];
     [self viewDidUnload];
-    NSLog(@"return button");*/
 }
 
-/*
-- (IBAction)saveButton:(id)sender
-{
-    NSLog(@"save button here");
-}
- */
 
 
 @end

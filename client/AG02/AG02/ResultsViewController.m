@@ -34,6 +34,20 @@
     //NSLog(@"%@", [[NSUserDefaults standardUserDefaults] stringForKey:@"age"]);
     //set age
     ageLabel.text = [[NSUserDefaults standardUserDefaults] stringForKey:@"age"];
+    
+    
+    result.text = NSLocalizedString(@"Result", @"");
+    yearsOld.text = NSLocalizedString(@"Years Old", @"");
+    [okButton setTitle:NSLocalizedString(@"Back", @"") forState:UIControlStateNormal];
+    [okButton setTitle:NSLocalizedString(@"Back", @"") forState:UIControlStateHighlighted];
+    [okButton setTitle:NSLocalizedString(@"Back", @"") forState:UIControlStateDisabled];
+    [okButton setTitle:NSLocalizedString(@"Back", @"") forState:UIControlStateSelected];
+    
+    [aboutButton setTitle:NSLocalizedString(@"About", @"") forState:UIControlStateNormal];
+    [aboutButton setTitle:NSLocalizedString(@"About", @"") forState:UIControlStateHighlighted];
+    [aboutButton setTitle:NSLocalizedString(@"About", @"") forState:UIControlStateDisabled];
+    [aboutButton setTitle:NSLocalizedString(@"About", @"") forState:UIControlStateSelected];
+    
 }
 
 - (void)viewDidUnload
@@ -117,8 +131,8 @@
 }
 
 - (IBAction)mouthButton:(id)sender {
-    //[self openDetails:@"nose_mouth"];
-    [self openDetails:@"face_aligned"];
+    [self openDetails:@"nose_mouth"];
+    //[self openDetails:@"face_aligned"];
 }
 
 

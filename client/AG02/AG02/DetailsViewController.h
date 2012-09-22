@@ -14,6 +14,8 @@
     IBOutlet UIImageView *detailImageView;
     GADBannerView *bannerView_;
     IBOutlet UITextView *partMessage;
+    
+    IBOutlet UIButton *returnButton;
 }
 
 - (void) initStuff:(NSString*)part;

@@ -14,6 +14,13 @@
     UIProgressHUD *progressHUD;
     IBOutlet UILabel *ageLabel;
     NSString *currentPart;
+    
+    IBOutlet UILabel *result;
+    IBOutlet UILabel *yearsOld;
+    IBOutlet UIButton *okButton;
+    IBOutlet UIButton *aboutButton;
+    
+    
 }
 
 

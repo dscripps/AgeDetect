@@ -14,6 +14,8 @@
     UIProgressHUD *progressHUD;
     int last_camera;
     UIImage *faceImage;
+    IBOutlet UIButton *againButton;
+    IBOutlet UIButton *submitButton;
 }
 
 - (void)initStuff:(UIImage *)img camera:(int)camera;
