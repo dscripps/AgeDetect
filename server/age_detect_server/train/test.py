@@ -63,7 +63,7 @@ if __name__ == "__main__":
         image = X[i]
         file = files[i]
         predicted_label = model.predict(image)
-        #print "{0}={1},{2}".format(file, predicted_label[0], predicted_label[1])
+        print "{0}={1},{2}".format(file, predicted_label[0], predicted_label[1])
         print predicted_label[0]
         
         if predicted_label[0] == 1:

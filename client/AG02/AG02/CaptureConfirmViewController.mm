@@ -133,11 +133,13 @@
     NSString *uuid = [[NSUserDefaults standardUserDefaults] stringForKey:@"uuid"];
     NSString *uuid_jpg = [NSString stringWithFormat:@"%@", uuid];
     
+    NSString *language = [[NSLocale preferredLanguages] objectAtIndex:0];
+    
     //NSLog(@"id is %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"uuid"]);
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:urlString]];
     [request setRequestMethod:@"POST"];
     [request setPostValue:uuid forKey:@"udid"];
-    [request setPostValue:@"en" forKey:@"language"];
+    [request setPostValue:language forKey:@"language"];
     [request setData:UIImageJPEGRepresentation(faceImage, 1.0f) withFileName:uuid_jpg andContentType:@"image/jpeg" forKey:@"image"];
     [request setDelegate:self];
     [request startAsynchronous];

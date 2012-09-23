@@ -26,36 +26,68 @@ class AgeGuesser(models.Model):
         return image_data
     
     def get_message(self, guessed_age, part):
+        
         message = ''
-        if guessed_age['is_male']:
-            if guessed_age['is_youth']:
-                message = 'ずいぶん若い'
-            elif guessed_age['is_old']:
-                message = '渋い'
-            elif guessed_age['is_20s']:
-                message = 'イケメンの'
-            elif guessed_age['is_30s']:
-                message = '紳士な'
+        
+        if guessed_age['language'] == 'ja':
+            if guessed_age['is_male']:
+                if guessed_age['is_youth']:
+                    message = 'ずいぶん若い'
+                elif guessed_age['is_old']:
+                    message = '渋い'
+                elif guessed_age['is_20s']:
+                    message = 'イケメンの'
+                elif guessed_age['is_30s']:
+                    message = '紳士な'
+                else:
+                    message = '普通な'
             else:
-                message = '普通な'
-        else:
-            if guessed_age['is_youth']:
-                message = 'かわいい'
-            elif guessed_age['is_old']:
-                message = '年増美人の'
-            elif guessed_age['is_20s']:
-                message = 'セクシーな'
-            elif guessed_age['is_30s']:
-                message = '女性らしい'
+                if guessed_age['is_youth']:
+                    message = 'かわいい'
+                elif guessed_age['is_old']:
+                    message = '年増美人の'
+                elif guessed_age['is_20s']:
+                    message = 'セクシーな'
+                elif guessed_age['is_30s']:
+                    message = '女性らしい'
+                else:
+                    message = '普通な'
+            if part == 'forehead':
+                message = "{0}お凸".format(message)
+            elif part == 'nose_mouth':
+                message = "{0}お鼻".format(message)
             else:
-                message = '普通な'
-        if part == 'forehead':
-            message = "{0}お凸".format(message)
-        elif part == 'nose_mouth':
-            message = "{0}お鼻".format(message)
+                message = "{0}目".format(message)
+            message = "{0}ですね〜".format(message)
         else:
-            message = "{0}目".format(message)
-        message = "{0}ですね〜".format(message)
+            if guessed_age['is_male']:
+                if guessed_age['is_youth']:
+                    message = "very youthful"
+                elif guessed_age['is_old']:
+                    message = "mature"
+                elif guessed_age['is_20s']:
+                    message = "handsome"
+                elif guessed_age['is_30s']:
+                    message = "gentlemanly"
+                else:
+                    message = "average"
+            else:
+                if guessed_age['is_youth']:
+                    message = "cute"
+                elif guessed_age['is_old']:
+                    message = "developed"
+                elif guessed_age['is_20s']:
+                    message = "sexy"
+                elif guessed_age['is_30s']:
+                    message = "womanly"
+                else:
+                    message = "average"
+            if part == 'forehead':
+                message = "You have a {0} forehead".format(message)
+            elif part == 'nose_mouth':
+                message = "You have a {0} nose".format(message)
+            else:
+                message = "You have {0} eyes".format(message)
         #return "{0}{1}{2}".format(male,youth,old)
         return message
         

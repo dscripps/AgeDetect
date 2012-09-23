@@ -30,6 +30,7 @@ def read_images(path, sz=None):
     #testSampleAnswer = 0
     #testSampleFile = ''
     filenames = glob.glob("{0}train/{1}*.jpg".format(settings.PROJECT_ROOT, path))
+    #filenames = glob.glob("{0}train/{1}*left_eye*.jpg".format(settings.PROJECT_ROOT, path))
     shuffle(filenames)
     
     for filename in filenames:
@@ -165,5 +166,5 @@ if __name__ == "__main__":
     
     
     
-    #cv2.waitKey(0)
+    cv2.waitKey(0)
     

@@ -69,6 +69,7 @@ class FeaturesExtractor(models.Model):
         img_orig = cv.LoadImage(input_name, 1)
         
         if is_upload:
+        #if True:
             #from iphone, rotate image first
             img = cv.CreateImage((img_orig.height,img_orig.width), img_orig.depth, img_orig.channels) # transposed image
             cv.Transpose(img_orig,img)
@@ -261,12 +262,17 @@ class FeaturesExtractor(models.Model):
                     
                     #save different features
                     #self.save_image(img, input_name, result_name + "face.jpg")
-                    if is_upload:
+                    #if is_upload:
+                    if True:
                         cv.SetImageROI(img,
-                             #(pt1[0] + left_eye[0][0], pt1[1] + left_eye[0][1], left_eye[0][2], left_eye[0][3])
                              (pt1[0] + left_eye_rect[0], pt1[1] + left_eye_rect[1], left_eye_width, left_eye_height)
+                             #(pt1[0] + left_eye_rect[0] + ((28-left_eye_width)/2), pt1[1] + left_eye_rect[1] + ((24-left_eye_height)/2), 28, 24)
                         )
-                        self.save_image(img, input_name, result_name + "left_eye.jpg")
+                        thumbnail = cv.CreateMat(65, 85, cv.CV_8UC3)
+                        cv.Resize(img, thumbnail)
+                        self.save_image(thumbnail, input_name, result_name + "left_eye.jpg")
+                        #self.save_image(img, input_name, result_name + "left_eye.jpg")
+                    if is_upload:
                         cv.SetImageROI(img,
                              (pt1[0] + right_eye_rect[0], pt1[1] + right_eye_rect[1], right_eye_width, right_eye_height)
                         )

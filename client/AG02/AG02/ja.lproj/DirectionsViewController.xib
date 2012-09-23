@@ -51,7 +51,7 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">directions.png</string>
+							<string key="NSResourceName">directions-ja.png</string>
 						</object>
 					</object>
 					<object class="IBUIImageView" id="871408662">
@@ -309,7 +309,7 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="directions.png">{320, 480}</string>
+			<string key="directions-ja.png">{320, 480}</string>
 			<string key="main_button.png">{257, 57}</string>
 			<string key="main_button_highlight.png">{257, 57}</string>
 			<string key="toolbar.png">{320, 44}</string>
