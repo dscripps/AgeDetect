@@ -8,13 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import "ProgressViewController.h"
+#import "MBProgressHUD.h"
 #import "GADBannerView.h"
+#import "iAd/iAd.h"
 
 
-@interface DirectionsViewController : UIViewController {
-    UIProgressHUD *progressHUD;
+@interface DirectionsViewController : UIViewController <ADBannerViewDelegate> {
+    //UIProgressHUD *progressHUD;
     
     GADBannerView *bannerView_;
+    IBOutlet ADBannerView *iAdView;
+    
     IBOutlet UITextView *directions;
     IBOutlet UIButton *startButton;
 }

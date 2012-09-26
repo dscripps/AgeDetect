@@ -8,14 +8,18 @@
 
 #import <UIKit/UIKit.h>
 #import "GADBannerView.h"
+#import "iAd/iAd.h"
 
-@interface DetailsViewController : UIViewController
+@interface DetailsViewController : UIViewController <ADBannerViewDelegate>
 {
     IBOutlet UIImageView *detailImageView;
     GADBannerView *bannerView_;
+    IBOutlet ADBannerView *iAdView;
+    
     IBOutlet UITextView *partMessage;
     
     IBOutlet UIButton *returnButton;
+    
 }
 
 - (void) initStuff:(NSString*)part;

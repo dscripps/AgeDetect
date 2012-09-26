@@ -92,12 +92,13 @@
 - (void)showProgressIndicator:(NSString *)text {
 	//[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	self.view.userInteractionEnabled = FALSE;
-	if(!progressHUD) {
+	/*if(!progressHUD) {
 		CGFloat w = 160.0f, h = 120.0f;
 		progressHUD = [[UIProgressHUD alloc] initWithFrame:CGRectMake((self.view.frame.size.width-w)/2, (self.view.frame.size.height-h)/2, w, h)];
 		[progressHUD setText:text];
 		[progressHUD showInView:self.view];
-	}
+	}*/
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 }
 
 // MARK: IBActions

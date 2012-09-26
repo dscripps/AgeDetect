@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "ProgressViewController.h"
+#import "MBProgressHUD.h"
 
 @interface CaptureConfirmViewController : UIViewController <UIAlertViewDelegate>
 {
-    UIProgressHUD *progressHUD;
+    //UIProgressHUD *progressHUD;
     int last_camera;
     UIImage *faceImage;
     IBOutlet UIButton *againButton;

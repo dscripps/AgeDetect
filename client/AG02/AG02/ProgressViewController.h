@@ -20,7 +20,7 @@
 - (void)stopAnimation;
 @end
 
-@interface UIProgressHUD : UIView {
+/*@interface UIProgressHUD : UIView {
     UIProgressIndicator *_progressIndicator;
     UILabel *_progressMessage;
     UIImageView *_doneView;
@@ -45,7 +45,7 @@
 - (void)done;
 - (void)dealloc;
 @end
-
+*/
 
 @interface ProgressViewController : UIViewController
 

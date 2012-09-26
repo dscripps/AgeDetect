@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "ProgressViewController.h"
+#import "MBProgressHUD.h"
 
 @interface ResultsViewController : UIViewController
 {
-    UIProgressHUD *progressHUD;
+    //UIProgressHUD *progressHUD;
     IBOutlet UILabel *ageLabel;
     NSString *currentPart;
     

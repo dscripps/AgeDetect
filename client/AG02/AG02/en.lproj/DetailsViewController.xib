@@ -11,6 +11,7 @@
 			<string key="NS.object.0">1179</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
+			<string>IBADBannerView</string>
 			<string>IBUITextView</string>
 			<string>IBUIButton</string>
 			<string>IBUIImageView</string>
@@ -57,7 +58,7 @@
 					<object class="IBUITextView" id="634410269">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{38, 197}, {245, 190}}</string>
+						<string key="NSFrame">{{38, 197}, {245, 200}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="355683809"/>
@@ -106,10 +107,9 @@
 					<object class="IBUIButton" id="355683809">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{99, 408}, {123, 52}}</string>
+						<string key="NSFrame">{{99, 413}, {123, 52}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -145,6 +145,27 @@
 							<double key="NSSize">15</double>
 							<int key="NSfFlags">16</int>
 						</object>
+					</object>
+					<object class="IBADBannerView" id="312709933">
+						<reference key="NSNextResponder" ref="191373211"/>
+						<int key="NSvFlags">306</int>
+						<string key="NSFrame">{{0, -1}, {320, 50}}</string>
+						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<bool key="IBUIOpaque">NO</bool>
+						<bool key="IBUIClipsSubviews">YES</bool>
+						<int key="IBUIContentMode">4</int>
+						<bool key="IBUIMultipleTouchEnabled">YES</bool>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<set class="NSMutableSet" key="IBADRequiredContentSizeIdentifiers">
+							<string>ADBannerContentSize320x50</string>
+							<string>ADBannerContentSize480x32</string>
+						</set>
+						<set key="IBADModernRequiredContentSizeIdentifiers">
+							<string>ADBannerContentSizeLandscape</string>
+							<string>ADBannerContentSizePortrait</string>
+						</set>
 					</object>
 				</array>
 				<string key="NSFrameSize">{320, 480}</string>
@@ -196,6 +217,14 @@
 					<int key="connectionID">14</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">iAdView</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="312709933"/>
+					</object>
+					<int key="connectionID">16</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">returnButton:</string>
 						<reference key="source" ref="355683809"/>
@@ -221,6 +250,7 @@
 							<reference ref="634410269"/>
 							<reference ref="900899453"/>
 							<reference ref="355683809"/>
+							<reference ref="312709933"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -255,6 +285,11 @@
 						<reference key="object" ref="900899453"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">15</int>
+						<reference key="object" ref="312709933"/>
+						<reference key="parent" ref="191373211"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -264,6 +299,7 @@
 				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="1.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="11.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="15.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="6.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<real value="1" key="6.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
@@ -273,7 +309,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">14</int>
+			<int key="maxID">16</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -293,6 +329,7 @@
 					</object>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="detailImageView">UIImageView</string>
+						<string key="iAdView">ADBannerView</string>
 						<string key="partMessage">UITextView</string>
 						<string key="returnButton">UIButton</string>
 					</dictionary>
@@ -300,6 +337,10 @@
 						<object class="IBToOneOutletInfo" key="detailImageView">
 							<string key="name">detailImageView</string>
 							<string key="candidateClassName">UIImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="iAdView">
+							<string key="name">iAdView</string>
+							<string key="candidateClassName">ADBannerView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="partMessage">
 							<string key="name">partMessage</string>

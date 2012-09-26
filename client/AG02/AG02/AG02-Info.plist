@@ -13,7 +13,7 @@
 	<key>CFBundleIconFiles</key>
 	<array>
 		<string>icon.png</string>
-		<string>icon_small.png</string>
+		<string>icon_ipad.png</string>
 	</array>
 	<key>CFBundleIdentifier</key>
 	<string>com.scrippsnorthstar.${PRODUCT_NAME:rfc1034identifier}</string>
@@ -34,6 +34,7 @@
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
+		<string>video-camera</string>
 	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>

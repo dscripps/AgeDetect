@@ -33,28 +33,6 @@
     [returnButton setTitle:NSLocalizedString(@"Back", @"") forState:UIControlStateHighlighted];
     [returnButton setTitle:NSLocalizedString(@"Back", @"") forState:UIControlStateDisabled];
     [returnButton setTitle:NSLocalizedString(@"Back", @"") forState:UIControlStateSelected];
-    
-    // Create a view of the standard size at the bottom of the screen.
-    // Available AdSize constants are explained in GADAdSize.h.
-    //bannerView_ = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
-    // Initialize the banner at the bottom of the screen.
-    //CGPoint origin = CGPointMake(0.0, self.view.frame.size.height + 20 - CGSizeFromGADAdSize(kGADAdSizeBanner).height);
-    CGPoint origin = CGPointMake(0.0, 0.0);
-    
-    // Use predefined GADAdSize constants to define the GADBannerView.
-    bannerView_ = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner origin:origin];
-    
-    // Specify the ad's "unit identifier." This is your AdMob Publisher ID.
-    bannerView_.adUnitID = @"a1504f4c90f2afe";
-    
-    // Let the runtime know which UIViewController to restore after taking
-    // the user wherever the ad goes and add it to the view hierarchy.
-    bannerView_.rootViewController = self;
-    [self.view addSubview:bannerView_];
-    
-    // Initiate a generic request to load it with an ad.
-    [bannerView_ loadRequest:[GADRequest request]];
-    [self.view addSubview:bannerView_];
 
     
 }
@@ -77,10 +55,6 @@
     detailImageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:urlStr]]];
     NSString *messageKey = [NSString stringWithFormat:@"message_%@", part];
     partMessage.text = [[NSUserDefaults standardUserDefaults] stringForKey:messageKey];
-    NSLog(part);
-    NSLog(messageKey);
-    NSLog([[NSUserDefaults standardUserDefaults] stringForKey:messageKey]);
-    NSLog(@"ok");
     /*NSString *uuid = [[NSUserDefaults standardUserDefaults] stringForKey:@"uuid"];
     [[NSUserDefaults standardUserDefaults] setObject:[responseDict valueForKey:@"message_forehead"] forKey:@"message_forehead"];
     [[NSUserDefaults standardUserDefaults] setObject:[responseDict valueForKey:@"message_left_eye"] forKey:@"message_left_eye"];
@@ -96,6 +70,35 @@
     cV.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentModalViewController:cV animated:YES];
     [self viewDidUnload];
+}
+
+// MARK: ads
+-(void) bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error {
+    NSLog(@"ad failed!!!");
+    //No ad to display, show admob
+    iAdView.hidden = YES;
+    
+    // Create a view of the standard size at the bottom of the screen.
+    // Available AdSize constants are explained in GADAdSize.h.
+    //bannerView_ = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
+    // Initialize the banner at the bottom of the screen.
+    //CGPoint origin = CGPointMake(0.0, self.view.frame.size.height + 20 - CGSizeFromGADAdSize(kGADAdSizeBanner).height);
+    CGPoint origin = CGPointMake(0.0, 0.0);
+    
+    // Use predefined GADAdSize constants to define the GADBannerView.
+    bannerView_ = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner origin:origin];
+    
+    // Specify the ad's "unit identifier." This is your AdMob Publisher ID.
+    bannerView_.adUnitID = @"a1504f4c90f2afe";
+    
+    // Let the runtime know which UIViewController to restore after taking
+    // the user wherever the ad goes and add it to the view hierarchy.
+    bannerView_.rootViewController = self;
+    [self.view addSubview:bannerView_];
+    
+    // Initiate a generic request to load it with an ad.
+    [bannerView_ loadRequest:[GADRequest request]];
+    
 }
 
 
