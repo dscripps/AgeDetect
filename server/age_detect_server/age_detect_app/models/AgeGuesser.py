@@ -28,6 +28,7 @@ class AgeGuesser(models.Model):
     def get_message(self, guessed_age, part):
         
         message = ''
+        part = part[1:]
         
         if guessed_age['language'] == 'ja':
             if guessed_age['is_male']:
@@ -56,9 +57,10 @@ class AgeGuesser(models.Model):
                 message = "{0}お凸".format(message)
             elif part == 'nose_mouth':
                 message = "{0}お鼻".format(message)
-            else:
+            elif part == 'left_eye' or part == 'right_eye':
                 message = "{0}目".format(message)
-            message = "{0}ですね〜".format(message)
+            else:
+                message = ""
         else:
             if guessed_age['is_male']:
                 if guessed_age['is_youth']:
@@ -82,16 +84,59 @@ class AgeGuesser(models.Model):
                     message = "womanly"
                 else:
                     message = "average"
+            print part
             if part == 'forehead':
                 message = "You have a {0} forehead".format(message)
             elif part == 'nose_mouth':
                 message = "You have a {0} nose".format(message)
-            else:
+            elif part == 'left_eye' or part == 'right_eye':
                 message = "You have {0} eyes".format(message)
+            else:
+                message = ""
         #return "{0}{1}{2}".format(male,youth,old)
         return message
+    
+    def guess_age(self, image_upload_dir, udid, language):
+        #face
+        body_part = 'face_aligned'
+        image_file = "{0}/{1}_result{2}.jpg".format(image_upload_dir, udid, body_part)
+        image = self.get_image(image_file)
+        guessed_age = self.guess_age_part(image, language, body_part)
         
-    def guess_age(self, image, language):
+        #individual parts
+        body_part = 'forehead'
+        image_file = "{0}/{1}_result{2}.jpg".format(image_upload_dir, udid, body_part)
+        image = self.get_image(image_file)
+        forehead = self.guess_age_part(image, language, body_part)
+        guessed_age['message_forehead'] = forehead['message']
+        
+        body_part = 'nose_mouth'
+        image_file = "{0}/{1}_result{2}.jpg".format(image_upload_dir, udid, body_part)
+        image = self.get_image(image_file)
+        nose_mouth = self.guess_age_part(image, language, body_part)
+        guessed_age['message_nose_mouth'] = nose_mouth['message']
+        
+        
+        body_part = 'left_eye'
+        image_file = "{0}/{1}_result{2}.jpg".format(image_upload_dir, udid, body_part)
+        image = self.get_image(image_file)
+        left_eye = self.guess_age_part(image, language, body_part)
+        guessed_age['message_left_eye'] = left_eye['message']
+                
+        #body_part = 'right_eye'
+        #image_file = "{0}/{1}_result{2}.jpg".format(image_upload_dir, udid, body_part)
+        #image = self.get_image(image_file)
+        #right_eye = self.guess_age_part(image, language, body_part)
+        right_eye = left_eye
+        guessed_age['message_right_eye'] = right_eye['message']
+        
+        return guessed_age
+    
+    def guess_age_part(self, image, language, body_part):
+        
+        body_part = "_{0}".format(body_part)
+        if body_part == '_face_aligned':
+            body_part = ''
         
         guessed_age = {
             'min':0,
@@ -102,11 +147,8 @@ class AgeGuesser(models.Model):
             'is_old':False,
             'is_20s':False,
             'is_30s':False,
-            'message_forehead': '',
-            'message_left_eye': '',
-            'message_right_eye': '',
-            'message_nose_mouth': '',
-            'language': language
+            'language': language,
+            'message': ''
         }
         
         
@@ -117,7 +159,7 @@ class AgeGuesser(models.Model):
         is_20s_model = cv2.createFisherFaceRecognizer()
         is_30s_model = cv2.createFisherFaceRecognizer()
         
-        is_male_model.load("{0}train/data/is_male.data".format(settings.PROJECT_ROOT))
+        is_male_model.load("{0}train/data/is_male{1}.data".format(settings.PROJECT_ROOT, body_part))
         
         #first, predict if male or female
         is_male = (is_male_model.predict(image)[0] == 1)
@@ -125,11 +167,19 @@ class AgeGuesser(models.Model):
         #if is_male:
         if True:
             #load male age datasets
-            decade_model.load("{0}train/data/male_decade.data".format(settings.PROJECT_ROOT))
-            is_youth_model.load("{0}train/data/male_is_youth.data".format(settings.PROJECT_ROOT))
-            is_old_model.load("{0}train/data/male_is_old.data".format(settings.PROJECT_ROOT))
-            is_20s_model.load("{0}train/data/male_is_20s.data".format(settings.PROJECT_ROOT))
-            is_30s_model.load("{0}train/data/male_is_30s.data".format(settings.PROJECT_ROOT))
+            
+            print "{0}train/data/male_is_old{1}.data".format(settings.PROJECT_ROOT, body_part)
+            
+            is_youth_model.load("{0}train/data/male_is_youth{1}.data".format(settings.PROJECT_ROOT, body_part))
+            is_old_model.load("{0}train/data/male_is_old{1}.data".format(settings.PROJECT_ROOT, body_part))
+            try:
+                decade_model.load("{0}train/data/male_decade{1}.data".format(settings.PROJECT_ROOT, body_part))
+                is_20s_model.load("{0}train/data/male_is_20s{1}.data".format(settings.PROJECT_ROOT, body_part))
+                is_30s_model.load("{0}train/data/male_is_30s{1}.data".format(settings.PROJECT_ROOT, body_part))
+            except:
+                decade_model = None
+                is_20s_model = None
+                is_30s_model = None
         else:
             #load female age datasets
             decade_model.load("{0}train/data/female_decade.data".format(settings.PROJECT_ROOT))
@@ -141,48 +191,47 @@ class AgeGuesser(models.Model):
         guessed_age['is_male'] = is_male
         guessed_age['is_youth'] = (is_youth_model.predict(image)[0] == 1)
         guessed_age['is_old'] = (is_old_model.predict(image)[0]  == 1)
-        guessed_age['is_20s'] = (is_20s_model.predict(image)[0] == 1)
-        guessed_age['is_30s'] = (is_30s_model.predict(image)[0] == 1)
-        guessed_age['decade'] = decade_model.predict(image)[0]
         
+        if decade_model:
+            #guess the age
+            guessed_age['decade'] = decade_model.predict(image)[0]
+            guessed_age['is_20s'] = (is_20s_model.predict(image)[0] == 1)
+            guessed_age['is_30s'] = (is_30s_model.predict(image)[0] == 1)
+            
+            
+            if guessed_age['is_youth'] and not guessed_age['is_old'] and not guessed_age['is_20s'] and not guessed_age['is_30s']:
+                guessed_age['min'] = 14
+                guessed_age['max'] = 20
+                guessed_age['age'] = random.randint(14, 20)
+            elif guessed_age['is_old'] and not guessed_age['is_youth'] and not guessed_age['is_20s'] and not guessed_age['is_30s']:
+                guessed_age['min'] = 40
+                guessed_age['max'] = 60
+                guessed_age['age'] = random.randint(40, 50)
+            else:
+                #image is neither young nor old
+                #guess the decade
+                decade = decade_model.predict(image)[0]
+                guessed_age['decade'] = decade
+                
+                total_cats = 1
+                total_age = decade+5
+                
+                #guess 20s/30s
+                
+                if guessed_age['is_20s']:
+                    total_cats = total_cats + 1
+                    total_age = total_age + 25
+                
+                if guessed_age['is_30s']:
+                    total_cats = total_cats + 1
+                    total_age = total_age + 35
+                
+                
+                guessed_age['age'] = int(total_age/total_cats)
+                
+        #guessed_age['message_right_eye'] = self.get_message(guessed_age, 'right_eye')
+        guessed_age['message'] = self.get_message(guessed_age, body_part)
         
-        if guessed_age['is_youth'] and not guessed_age['is_old'] and not guessed_age['is_20s'] and not guessed_age['is_30s']:
-            guessed_age['min'] = 14
-            guessed_age['max'] = 20
-            guessed_age['age'] = random.randint(14, 20)
-        elif guessed_age['is_old'] and not guessed_age['is_youth'] and not guessed_age['is_20s'] and not guessed_age['is_30s']:
-            guessed_age['min'] = 40
-            guessed_age['max'] = 60
-            guessed_age['age'] = random.randint(40, 50)
-        else:
-            #image is neither young nor old
-            #guess the decade
-            decade = decade_model.predict(image)[0]
-            guessed_age['decade'] = decade
-            
-            total_cats = 1
-            total_age = decade+5
-            
-            #guess 20s/30s
-            
-            if guessed_age['is_20s']:
-                total_cats = total_cats + 1
-                total_age = total_age + 25
-            
-            if guessed_age['is_30s']:
-                total_cats = total_cats + 1
-                total_age = total_age + 35
-            #guessed_age['min'] = decade
-            #guessed_age['max'] = decade+9
-            
-            #guessed_age['age'] = random.randint(decade, decade+5)
-            guessed_age['age'] = int(total_age/total_cats)
-
-
-        guessed_age['message_forehead'] = self.get_message(guessed_age, 'forehead')
-        guessed_age['message_left_eye'] = self.get_message(guessed_age, 'left_eye')
-        guessed_age['message_right_eye'] = self.get_message(guessed_age, 'right_eye')
-        guessed_age['message_nose_mouth'] = self.get_message(guessed_age, 'nose_mouth')
         
         return guessed_age
     

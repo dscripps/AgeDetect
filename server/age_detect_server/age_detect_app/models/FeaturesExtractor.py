@@ -272,23 +272,29 @@ class FeaturesExtractor(models.Model):
                         cv.Resize(img, thumbnail)
                         self.save_image(thumbnail, input_name, result_name + "left_eye.jpg")
                         #self.save_image(img, input_name, result_name + "left_eye.jpg")
-                    if is_upload:
+                        
                         cv.SetImageROI(img,
                              (pt1[0] + right_eye_rect[0], pt1[1] + right_eye_rect[1], right_eye_width, right_eye_height)
                         )
-                        self.save_image(img, input_name, result_name + "right_eye.jpg")
+                        thumbnail = cv.CreateMat(65, 85, cv.CV_8UC3)
+                        cv.Resize(img, thumbnail)
+                        self.save_image(thumbnail, input_name, result_name + "right_eye.jpg")
                         
                         #nose/mouth
                         cv.SetImageROI(img,
                             (pt1[0] + mouth_nose_rect[0], pt1[1] + mouth_nose_rect[1], mouth_nose_width, mouth_nose_height)
                         )
-                        self.save_image(img, input_name, result_name + "nose_mouth.jpg")
+                        thumbnail = cv.CreateMat(70, 160, cv.CV_8UC3)
+                        cv.Resize(img, thumbnail)
+                        self.save_image(thumbnail, input_name, result_name + "nose_mouth.jpg")
                         
                         #forehead
                         cv.SetImageROI(img,
                             (pt1[0] + forehead_rect[0], pt1[1] + forehead_rect[1], forehead_width, forehead_height)
                         )
-                        self.save_image(img, input_name, result_name + "forehead.jpg")
+                        thumbnail = cv.CreateMat(85, 200, cv.CV_8UC3)
+                        cv.Resize(img, thumbnail)
+                        self.save_image(thumbnail, input_name, result_name + "forehead.jpg")
                     
                     
                     cv.SetImageROI(img,

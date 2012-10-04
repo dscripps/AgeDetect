@@ -22,15 +22,16 @@ def normalize(X, low, high, dtype=None):
         return np.asarray(X)
     return np.asarray(X, dtype=dtype)
 
-def read_images(path, sz=None):
+def read_images(path, face_part=''):
     
     
     X,y = [], []
-    #testSample = None
-    #testSampleAnswer = 0
-    #testSampleFile = ''
-    filenames = glob.glob("{0}train/{1}*.jpg".format(settings.PROJECT_ROOT, path))
+    
+    
+    #filenames = glob.glob("{0}train/{1}*.jpg".format(settings.PROJECT_ROOT, path))
     #filenames = glob.glob("{0}train/{1}*left_eye*.jpg".format(settings.PROJECT_ROOT, path))
+    filenames = glob.glob("{0}train/{1}*{2}*.jpg".format(settings.PROJECT_ROOT, path, face_part))
+    
     shuffle(filenames)
     
     for filename in filenames:
@@ -38,12 +39,6 @@ def read_images(path, sz=None):
         answer = get_correct_answer(filename)
         if answer > 0:
             image_data = np.asarray(im, dtype=np.uint8)
-            #if testSample is None:
-            #    #print "{0}".format(filename)
-            #    testSample = image_data
-            #    testSampleAnswer = answer
-            #    testSampleFile = filename
-            #else:
             X.append(image_data)
             y.append(answer)
     return [X,y]
@@ -107,7 +102,7 @@ if __name__ == "__main__":
         #testSample = testXs[i]
     #testSampleAnswer = testYs[i]
     
-    [X,y] = read_images(sys.argv[1])
+    [X,y] = read_images(sys.argv[1], sys.argv[3])
     model = cv2.createFisherFaceRecognizer()
     model.train(X,np.asarray(y))
     #model.setDouble("threshold", 1000.0)
