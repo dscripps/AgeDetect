@@ -64,27 +64,6 @@
     CFStringRef string = CFUUIDCreateString(NULL, theUUID);
     CFRelease(theUUID);
     return [(NSString *)string autorelease];
-    
-    /*
-    // Create universally unique identifier (object)
-    CFUUIDRef uuidObject = CFUUIDCreate(kCFAllocatorDefault);
-    
-    // Get the string representation of CFUUID object.
-    NSString *uuidStr = [(NSString *)CFUUIDCreateString(kCFAllocatorDefault, uuidObject) autorelease];
-    
-    // If needed, here is how to get a representation in bytes, returned as a structure
-    // typedef struct {
-    //   UInt8 byte0;
-    //   UInt8 byte1;
-    //   ...
-    //   UInt8 byte15;
-    // } CFUUIDBytes;
-    CFUUIDBytes bytes = CFUUIDGetUUIDBytes(uuidObject);
-    
-    CFRelease(uuidObject);
-    
-    return uuidStr;
-     */
 }
 
 

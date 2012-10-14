@@ -51,7 +51,7 @@
 - (void) initStuff:(NSString*)part {
     //NSString *part = @"left_eye";
     //NSString *part = @"forehead";
-    NSString *urlStr = [NSString stringWithFormat:@"http://ec2-176-34-8-245.ap-northeast-1.compute.amazonaws.com/uploads/%@_result%@.jpg", [[NSUserDefaults standardUserDefaults] stringForKey:@"uuid"], part];
+    NSString *urlStr = [NSString stringWithFormat:@"http://ec2-176-32-80-17.ap-northeast-1.compute.amazonaws.com/uploads/%@_result%@.jpg", [[NSUserDefaults standardUserDefaults] stringForKey:@"uuid"], part];
     detailImageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:urlStr]]];
     NSString *messageKey = [NSString stringWithFormat:@"message_%@", part];
     partMessage.text = [[NSUserDefaults standardUserDefaults] stringForKey:messageKey];

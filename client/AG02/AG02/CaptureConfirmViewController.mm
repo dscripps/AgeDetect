@@ -129,14 +129,14 @@
 	 setting the quality to 90
      */
 	// setting up the URL to post to
-	NSString *urlString = @"http://ec2-176-34-8-245.ap-northeast-1.compute.amazonaws.com/upload/";
+	NSString *urlString = @"http://ec2-176-32-80-17.ap-northeast-1.compute.amazonaws.com/upload/";
     
     NSString *uuid = [[NSUserDefaults standardUserDefaults] stringForKey:@"uuid"];
     NSString *uuid_jpg = [NSString stringWithFormat:@"%@", uuid];
     
     NSString *language = [[NSLocale preferredLanguages] objectAtIndex:0];
     
-    //NSLog(@"id is %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"uuid"]);
+    NSLog(@"id is %@", [[NSUserDefaults standardUserDefaults] stringForKey:@"uuid"]);
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:urlString]];
     [request setRequestMethod:@"POST"];
     [request setPostValue:uuid forKey:@"udid"];
@@ -157,7 +157,7 @@
     // Use when fetching binary data
     //NSData *responseData = [request responseData];
     
-    //NSLog(responseString);
+    NSLog(responseString);
     
     NSDictionary *responseDict = [responseString JSONValue];
     if (responseDict == NULL) {
