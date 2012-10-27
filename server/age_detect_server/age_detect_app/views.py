@@ -30,12 +30,28 @@ def upload_file(request):
         c['form'] = form
         return render_to_response('upload.html', c)
 
-def test_svms(request):
-    uploadedImage = UploadedImage()
-    uploadedImage.test()
+def test(request):
+    from age_detect_app.models import AgeGuesser
+    #self.get_message(guessed_age, body_part)
+    ageGuesser = AgeGuesser()
+    guessed_age = {
+        'is_male':True,
+        'min':0,
+        'max':0,
+        'age':0,
+        'decade':0,
+        'is_youth':False,
+        'is_old':False,
+        'is_20s':True,
+        'is_30s':False,
+        'language':'en',
+        'message': ''
+    }
+    #body_part = '_forehead'
+    #body_part = '_nose_mouth'
+    body_part = '_left_eye'
     
-    
-    result = json.dumps({})
+    result = json.dumps(ageGuesser.get_message(guessed_age, body_part))
     response = HttpResponse(result, mimetype = "application/json")
     return response
     

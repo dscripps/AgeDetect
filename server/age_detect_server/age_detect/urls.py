@@ -9,7 +9,7 @@ from age_detect import settings
 urlpatterns = patterns('',
     # Examples:
     url(r'^upload/$', 'age_detect_app.views.upload_file'),
-    url(r'^test_svms/$', 'age_detect_app.views.test_svms'),
+    url(r'^test/$', 'age_detect_app.views.test'),
     # url(r'^$', 'age_detect.views.home', name='home'),
     # url(r'^age_detect/', include('age_detect.foo.urls')),
 

@@ -62,38 +62,72 @@ class AgeGuesser(models.Model):
             else:
                 message = ""
         else:
-            if guessed_age['is_male']:
-                if guessed_age['is_youth']:
-                    message = "very youthful"
-                elif guessed_age['is_old']:
-                    message = "mature"
-                elif guessed_age['is_20s']:
-                    message = "handsome"
-                elif guessed_age['is_30s']:
-                    message = "gentlemanly"
-                else:
-                    message = "average"
+            responses = {
+                'is_male': {
+                    'forehead': {
+                        'is_youth':"Your forehead is just starting to blossom.  It will be interesting to see how it evolves in the next few years.",
+                        'is_old':"You have a mature forehead that commands respect.  Similar to Ted Danson or The Dalai Lama.  While not quite over the hill, your forehead shows wisdom and understands the impermanence of all things.",
+                        'is_20s':"You have a handsome forehead.  Somewhere in its twenties, your forehead is at the peak of its youth.  Enjoy that forehead while you still can!  There will be a day when you will see a picture of your forehead and think, \"man, those were some good times\".",
+                        'is_30s':"You have a gentlemanly forehead.  Your forehead is now in a place where it has matured, but still has a bit of youthful arrogance.  It is the kind of forehead that will attract a partner looking to settle down long-term.",
+                        'other':"Your forehead doesn't seem to have anything out of the ordinary.  Just an average joe forehead."
+                    },
+                            
+                    'nose_mouth': {
+                        'is_youth':"Your nose and mouth are very young!  Compared to my massive database of mouths and noses, there's only a few that show up younger.  Seriously.",
+                        'is_old':"\"If that mouth could only talk\", oh wait, I guess it can.  Your mouth and nose seem to have a history going back quite a ways.",
+                        'is_20s':"Your nose and mouth are definitely in their prime.  You still got a few years in that mouth before the party ends and it comes time to settle down.",
+                        'is_30s':"If I didn't know better, I'd say that's Prince Harry of Wales?  You have a very charming, princely nose and mouth.",
+                        'other':"Your nose and mouth don't seem to have any redeeming characteristics.  Which is probably a good thing.  Perhaps a bit masculine."
+                    },
+                    'eye': {
+                        'is_youth':"Is that Justin Bieber?  What cute baby eyes you have!",
+                        'is_old':"Your eyes show a history rich of life, with all its ups and downs.  It'd be nice to have a chat some day with you, I'm sure you have a lot of interesting stories to tell about the things you saw with those eyes.",
+                        'is_20s':"Hey handsome!  Those are some real nice eyes you have there.  Somebody in their twenties, maybe a recent college grad?",
+                        'is_30s':"Your eyes suggest a man in his 30s.  There's a twinkle of youth, but a hint of cynicism as well.  Lighten up and try not to take life so seriously.",
+                        'other':"Your eyes don't seem to give any information regarding your age.  Very mysterious."
+                    }
+                },
+                'is_female': {
+                    'forehead': {
+                        'is_youth':"You have a beautiful, youthful forehead.",
+                        'is_old':"Your forehead has a mature beauty wise beyond its years.",
+                        'is_20s':"You have a beautiful forehead.  Somewhere in its twenties, your forehead is at the peak of its youth.  Enjoy that forehead while you still can!  There will be a day when you will see a picture of your forehead and think, \"boy oh boy, those were some good times\".",
+                        'is_30s':"Your forehead screams beauty.  Think Angelina Jolie.",
+                        'other':"Your forehead doesn't seem to have anything out of the ordinary.  Just an average forehead."
+                    },
+                    'nose_mouth': {
+                        'is_youth':"Your nose and mouth have a youthful and suggest that you are still a child.",
+                        'is_old':"Your mouth and nose have a wisdom and feminine charm.",
+                        'is_20s':"Your lips and mouth resemble Elizabeth Taylor in her prime.",
+                        'is_30s':"Your mouth and nose have the appeal of Marilyn Monroe.",
+                        'other':"Your nose and mouth don't seem to have any redeeming characteristics.  Which is probably a good thing.  Perhaps a bit feminine."
+                    },
+                    'eye': {
+                        'is_youth':"Your eyes are very young!  On top of that, they appear to be quite feminine.",
+                        'is_old':"You have beautiful mature eyes like Michelle Pfeiffer.",
+                        'is_20s':"Your eyes are the envy of the town.  Perhaps in their mid-twenties.",
+                        'is_30s':"Your eyes suggest a woman in her thirties.",
+                        'other':"Your eyes don't seem to give any information regarding your age.  Very mysterious."
+                    }
+                }
+            }
+            message_part = part
+            if message_part == 'left_eye' or message_part == 'right_eye':
+                message_part = 'eye'
+            message_sex = 'is_male'
+            if guessed_age['is_male'] != True:
+                message_sex = 'is_female'
+            if guessed_age['is_youth']:
+                message_age = 'is_youth'
+            elif guessed_age['is_old']:
+                message_age = 'is_old'
+            elif guessed_age['is_20s']:
+                message_age = 'is_20s'
+            elif guessed_age['is_30s']:
+                message_age = 'is_30s'
             else:
-                if guessed_age['is_youth']:
-                    message = "cute"
-                elif guessed_age['is_old']:
-                    message = "developed"
-                elif guessed_age['is_20s']:
-                    message = "sexy"
-                elif guessed_age['is_30s']:
-                    message = "womanly"
-                else:
-                    message = "average"
-            print part
-            if part == 'forehead':
-                message = "You have a {0} forehead".format(message)
-            elif part == 'nose_mouth':
-                message = "You have a {0} nose".format(message)
-            elif part == 'left_eye' or part == 'right_eye':
-                message = "You have {0} eyes".format(message)
-            else:
-                message = ""
-        #return "{0}{1}{2}".format(male,youth,old)
+                message_age = 'other'
+            message = responses[message_sex][message_part][message_age]
         return message
     
     def guess_age(self, image_upload_dir, udid, language):
