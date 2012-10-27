@@ -13,6 +13,8 @@ from age_detect import settings
 
 class AgeGuesser(models.Model):
     
+    face_guessed_age = None
+    
 #    def __init__(self):
 #        self.is_male_model = cv2.createFisherFaceRecognizer()
 #        self.is_youth_model = cv2.createFisherFaceRecognizer()#is youth? (4-13 yes, 19+ no)
@@ -30,6 +32,28 @@ class AgeGuesser(models.Model):
         message = ''
         part = part[1:]
         
+        #for now, use face as body part
+        if self.face_guessed_age != None:
+            guessed_age = self.face_guessed_age
+        #at least give some unique responses
+        if random.randint(1, 2) == 2:
+            if guessed_age['is_youth'] or guessed_age['is_old']:
+                guessed_age['is_youth'] = False
+                guessed_age['is_old'] = False
+            elif guessed_age['is_20s']:
+                guessed_age['is_20s'] = False
+                guessed_age['is_youth'] = True
+            elif guessed_age['is_30s']:
+                guessed_age['is_30s'] = False
+                guessed_age['is_20s'] = True
+            elif guessed_age['age'] < 30:
+                if random.randint(1, 2) == 2:
+                    guessed_age['is_youth'] = True
+                else:
+                    guessed_age['is_20s'] = True
+            else:
+                guessed_age['is_30s'] = True
+                
         if guessed_age['language'] == 'ja':
             if guessed_age['is_male']:
                 if guessed_age['is_youth']:
@@ -77,7 +101,7 @@ class AgeGuesser(models.Model):
                         'is_old':"\"If that mouth could only talk\", oh wait, I guess it can.  Your mouth and nose seem to have a history going back quite a ways.",
                         'is_20s':"Your nose and mouth are definitely in their prime.  You still got a few years in that mouth before the party ends and it comes time to settle down.",
                         'is_30s':"If I didn't know better, I'd say that's Prince Harry of Wales?  You have a very charming, princely nose and mouth.",
-                        'other':"Your nose and mouth don't seem to have any redeeming characteristics.  Which is probably a good thing.  Perhaps a bit masculine."
+                        'other':"Your nose and mouth don't seem to have any redeeming characteristics.  Which is probably a good thing."
                     },
                     'eye': {
                         'is_youth':"Is that Justin Bieber?  What cute baby eyes you have!",
@@ -138,6 +162,7 @@ class AgeGuesser(models.Model):
         image_file = "{0}/{1}_result{2}.jpg".format(image_upload_dir, udid, body_part)
         image = self.get_image(image_file)
         guessed_age = self.guess_age_part(image, language, body_part)
+        self.face_guessed_age = guessed_age
         
         #individual parts
         body_part = 'forehead'
@@ -204,7 +229,7 @@ class AgeGuesser(models.Model):
         if True:
             #load male age datasets
             
-            print "{0}train/data/male_is_old{1}.data".format(settings.PROJECT_ROOT, body_part)
+            #print "{0}train/data/male_is_old{1}.data".format(settings.PROJECT_ROOT, body_part)
             
             is_youth_model.load("{0}train/data/male_is_youth{1}.data".format(settings.PROJECT_ROOT, body_part))
             is_old_model.load("{0}train/data/male_is_old{1}.data".format(settings.PROJECT_ROOT, body_part))
@@ -265,7 +290,6 @@ class AgeGuesser(models.Model):
                 
                 guessed_age['age'] = int(total_age/total_cats)
                 
-        #guessed_age['message_right_eye'] = self.get_message(guessed_age, 'right_eye')
         guessed_age['message'] = self.get_message(guessed_age, body_part)
         
         
