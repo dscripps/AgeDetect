@@ -127,7 +127,9 @@ class AgeGuesser(models.Model):
                 message_age = 'is_30s'
             else:
                 message_age = 'other'
-            message = responses[message_sex][message_part][message_age]
+            message = ''
+            if message_part != '':
+                message = responses[message_sex][message_part][message_age]
         return message
     
     def guess_age(self, image_upload_dir, udid, language):
