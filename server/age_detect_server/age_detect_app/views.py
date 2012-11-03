@@ -27,7 +27,7 @@ def upload_file(request):
             response = HttpResponse(result, mimetype = "application/json")
             
             #increment count in analytics
-            f = urllib.urlopen("http://ec2-176-32-80-17.ap-northeast-1.compute.amazonaws.com/")
+            f = urllib.urlopen("http://ec2-176-32-80-17.ap-northeast-1.compute.amazonaws.com/analytics")
             return response
     else:
         form = UploadFileForm()
@@ -57,9 +57,6 @@ def test(request):
     
     result = json.dumps(ageGuesser.get_message(guessed_age, body_part))
     response = HttpResponse(result, mimetype = "application/json")
-    f = urllib.urlopen("http://ec2-176-32-80-17.ap-northeast-1.compute.amazonaws.com/analytics")
-    #f = urllib.urlopen("http://127.0.0.1:8000/analytics/")
-    #print f.read()
     return response
 
 def analytics(request):
