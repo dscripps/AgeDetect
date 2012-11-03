@@ -19,7 +19,12 @@
     UIImage *currentImage;
     UIImage *faceImage;
     
+    IBOutlet UILabel *good;
+    IBOutlet UILabel *cantSee1;
+    IBOutlet UILabel *cantSee2;
+    
     NSDate *start;
+    NSDate *faceAppearStart;
     
 	MBRoundProgressView* progress;
     

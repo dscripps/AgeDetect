@@ -60,6 +60,9 @@ const int kHaarOptions =  CV_HAAR_FIND_BIGGEST_OBJECT | CV_HAAR_DO_ROUGH_SEARCH;
         NSLog(@"Could not load eye cascade: %@", eyeCascadePath);
     }
     
+    good.hidden = YES;
+    cantSee1.hidden = YES;
+    cantSee2.hidden = YES;
     
     self.camera = 1;
     
@@ -112,7 +115,9 @@ const int kHaarOptions =  CV_HAAR_FIND_BIGGEST_OBJECT | CV_HAAR_DO_ROUGH_SEARCH;
     }
     //note the time (give user a few seconds before checking faces)
     NSTimeInterval secondsElapsed = [[NSDate date] timeIntervalSinceDate:start];
-    //progress.hidden = NO;
+    good.hidden = NO;
+    cantSee1.hidden = YES;
+    cantSee2.hidden = YES;
     //[progress setProgress:secondsElapsed];
     if (secondsElapsed < 1) {
         return;
@@ -206,9 +211,15 @@ const int kHaarOptions =  CV_HAAR_FIND_BIGGEST_OBJECT | CV_HAAR_DO_ROUGH_SEARCH;
 {
     
     if(faces.size() < 1) {
-        //progress.hidden = YES;
+        good.hidden = YES;
+        cantSee1.hidden = YES;
+        cantSee2.hidden = YES;
         start = nil;//reset time
+        faceAppearStart = nil;
         return;
+    }
+    if(faceAppearStart == nil) {
+        faceAppearStart = [[NSDate date] retain];
     }
     
     NSArray *sublayers = [NSArray arrayWithArray:[self.view.layer sublayers]];
@@ -279,7 +290,14 @@ const int kHaarOptions =  CV_HAAR_FIND_BIGGEST_OBJECT | CV_HAAR_DO_ROUGH_SEARCH;
     _eyeCascade.detectMultiScale(RoiImg, eyes, 1.1, 2, kHaarOptions, cv::Size(20, 15));
     if(eyes.size() < 1) {
         start = nil;//reset time
-        //progress.hidden = YES;
+        good.hidden = YES;
+        //note the time (give user a few seconds before checking faces)
+        NSTimeInterval secondsElapsed = [[NSDate date] timeIntervalSinceDate:faceAppearStart];
+        if (secondsElapsed > 1) {
+            cantSee1.hidden = NO;
+            cantSee2.hidden = NO;
+        }
+        
         [CATransaction commit];
         return;
     }
@@ -336,7 +354,7 @@ const int kHaarOptions =  CV_HAAR_FIND_BIGGEST_OBJECT | CV_HAAR_DO_ROUGH_SEARCH;
     
     if(eyes.size() < 1) {
         start = nil;//reset time
-        //progress.hidden = YES;
+        good.hidden = YES;
         [CATransaction commit];
         return;
     }

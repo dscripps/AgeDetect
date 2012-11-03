@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     # Examples:
     url(r'^upload/$', 'age_detect_app.views.upload_file'),
     url(r'^test/$', 'age_detect_app.views.test'),
+    url(r'^analytics/$', 'age_detect_app.views.analytics'),
     # url(r'^$', 'age_detect.views.home', name='home'),
     # url(r'^age_detect/', include('age_detect.foo.urls')),
 

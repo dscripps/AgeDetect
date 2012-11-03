@@ -4,6 +4,7 @@ from django import forms
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 import json
+import urllib
 
 class UploadFileForm(forms.Form):
     udid = forms.CharField(initial = '12345')
@@ -24,6 +25,9 @@ def upload_file(request):
             result = uploadedImage.to_json()#get age
             #uploadedImage.cleanup()#remove all tmp files used to get age
             response = HttpResponse(result, mimetype = "application/json")
+            
+            #increment count in analytics
+            f = urllib.urlopen("http://ec2-176-32-80-17.ap-northeast-1.compute.amazonaws.com/")
             return response
     else:
         form = UploadFileForm()
@@ -53,5 +57,12 @@ def test(request):
     
     result = json.dumps(ageGuesser.get_message(guessed_age, body_part))
     response = HttpResponse(result, mimetype = "application/json")
+    #f = urllib.urlopen("http://ec2-176-32-80-17.ap-northeast-1.compute.amazonaws.com/")
+    f = urllib.urlopen("http://127.0.0.1:8000/analytics/")
+    #print f.read()
     return response
+
+def analytics(request):
+    #print 'opening analytics'
+    return render_to_response('analytics.html')
     
